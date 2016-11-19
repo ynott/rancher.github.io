@@ -1,0 +1,8 @@
+project_identifier: jpdocsranchergithubio
+api_key: 701b2e2a8441412f8e6e23011bd08550
+base_path: /home/t-yano/src/rancher.github.io
+
+files:
+  -
+    source: '/rancher/v1.2/en/**/index.md'
+    translation: '/rancher/v1.2/%two_letters_code%/**/%original_file_name%'
