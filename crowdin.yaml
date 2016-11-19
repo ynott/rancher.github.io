@@ -6,3 +6,5 @@ files:
   -
     source: '/rancher/v1.2/en/**/index.md'
     translation: '/rancher/v1.2/%two_letters_code%/**/%original_file_name%'
+    ignore:
+      - /rancher/v1.2/en/api/**
