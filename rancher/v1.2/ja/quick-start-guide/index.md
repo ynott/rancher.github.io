@@ -38,21 +38,21 @@ UIは`8080`ポートで公開されています。したがって、UIを表示�
 
 > **注:** Rancherにはアクセス制御が設定されておらず、あなたのIPにアクセスできる誰でもあなたのUIとAPIを利用できます。 [アクセス制御]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/configuration/access-control/)を設定することをお勧めします。
 
-### Add Hosts
+### ホストを追加
 
-For simplicity, we will add the same host running the Rancher server as a host in Rancher. In real production deployments, we recommend having dedicated hosts running Rancher server(s).
+わかりやすくするため、RancherのホストとしてRancherサーバーを実行している同じホストを追加します。実際の運用展開では、専用のRancherを実行するホストを持つことをお勧めします。
 
-To add a host, access the UI and click **Infrastructure**, which will immediately bring you to the **Hosts** page. Click on the **Add Host**. Rancher will prompt you to select a host registration URL. This URL is where Rancher server is running and must be reachable from all the hosts that you will be adding. This is useful in installations where Rancher server will be exposed to the Internet through a NAT firewall or a load balancer. If your host has a private or local IP address like `192.168.*.*`, Rancher will print a warning asking you to make sure that the hosts can indeed reach the URL.
+ホストを追加するには、UIから**インフラストラクチャー**をクリックして、**ホスト**ページを表示してください。 **ホストの追加**をクリックします。 Rancherで利用するURLを選択するように求められます。 このURLは、Rancher サーバー が動いているURLで、これから追加するRancherホストから接続可能なものでなくてはなりません。 この設定は、RancherサーバーがファイヤウォールでNATされたり、ロードバランサーを介してインターネットに公開される場合に便利です。 ホストに`192.168.*.*`のようなプライベートやローカルIPなアドレスがついていた場合、Rancherサーバーにホストが本当にURLにアクセスできるかどうかを尋ねる警告が表示されます。
 
-For now you can ignore these warnings, we will only be adding the Rancher server host itself. Click **Save**. By default, the **Custom** option will be selected, which provides the Docker command to launch the Rancher agent container. There will also be options for cloud providers, which Rancher uses Docker Machine to launch hosts.
+今のところ、これらの警告を無視することができます。これはRancherサーバーホスト自体を追加するだけです。 **保存**をクリックします。 デフォルトでは、Rackherエージェントコンテナを起動するDockerコマンドを提供する**カスタム**オプションが選択されます。 RancherがDocker Machineを使用してホストを起動するクラウドプロバイダのオプションもあります。
 
-In the UI, it provides instructions of the ports that need to be open on your host as well as some optional information. Since we are adding a host that is also running Rancher server, we need to add the public IP that should be used for the host. One of the options provides the ability to input this IP, which automatically updates the custom command with an environment variable.
+UIでは、ホスト上で開く必要があるポートの指示とオプションの設定項目が表示されます。 Rancherサーバーも稼動しているホストを追加するので、このホストで使用するパブリックIPを追加する必要があります。 このオプションで入力されたIPにより、カスタムコマンドでの環境変数が自動的に変更されます。
 
-Run this command in the host that is running Rancher server.
+Rancherサーバーを実行しているホストでこのコマンドを実行します。
 
-When you click **Close** on the Rancher UI, you will be directed back to the **Infrastructure** -> **Hosts** view. In a couple of minutes, the host will automatically appear.
+Rancher UIで**閉じる**をクリックすると、**インフラストラクチャ** -> **ホスト**ビューに戻ります。 数分後に、ホストが自動的に表示されます。
 
-### Create a Container through UI
+### UIを使用してコンテナを作成する
 
 Navigate to the **Stacks** page, if there are still no services, you can click on the **Define a Service** button in the welcome screen. If there are already services in your Rancher set up, you can click on **Add Service** in any existing stack or create a new stack to add services in. If you need to create a new stack, click on **Add Stack**, provide a name and description and click **Create**. Then, click on **Add Service**.
 
