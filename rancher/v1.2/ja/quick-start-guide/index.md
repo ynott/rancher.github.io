@@ -62,57 +62,57 @@ Rancher UIで**閉じる**をクリックすると、**インフラストラク�
 
 ***first-container***のドロップダウンをクリックすると、コンテナの停止、ログの表示、コンテナコンソールへのアクセスなどの管理アクションを実行できます。
 
-### Create a Container through Native Docker CLI
+### DockerのCLIを直接使ってコンテナを作成する
 
-Rancher will display any containers on the host even if the container is created outside of the UI. Create a container in the host's shell terminal.
+Rancherは、コンテナがUI以外から作成されていても、ホスト上のコンテナを表示します。ホストのシェル端末からコンテナを作成します。
 
 ```bash
 $ docker run -d -it --name=second-container ubuntu:14.04.2
 ```
 
-In the UI, you will see ***second-container*** pop up on your host!
+UIでは、 ***セカンドコンテナ*** がホスト上にポップアップ表示されます。
 
-Rancher reacts to events that happen on the Docker daemon and does the right thing to reconcile its view of the world with reality. You can read more about using Rancher with the [native docker CLI]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/native-docker/).
+RancherはDockerデーモンで発生するイベントに反応し、実際動作環境とRancherからの状況を調和させるために調整します。 [native docker CLI]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/native-docker/)でRancherを使用する方法について詳しく読むことができます。
 
-If you look at the IP address of the ***second-container***, you will notice that it is not in `10.42.*.*` range. It instead has the usual IP address assigned by the Docker daemon. This is the expected behavior of creating a Docker container through the CLI.
+***第2コンテナ*** のIPアドレスを見ると、` 10.42.*.* `の範囲にはないことがわかります。 これは、Dockerデーモンによって割り当てられた通常のIPアドレスです。 CLIを使用してDockerコンテナを作成するとこのようになります。
 
-What if we want to create a Docker container through CLI and still give it an IP address from Rancher’s overlay network? All we need to do is add a label in the command.
+RancherのオバーレイネットワークからIPアドレスを渡して、CLIを使用してDockerコンテナを作成するにはどうすればよいでしょうか？することは、コマンドにラベルを追加するだけです。
 
 ```bash
 $ docker run -d -it --label io.rancher.container.network=true ubuntu:14.04.2
 ```
 
-<br /> The label `io.rancher.container.network` enables us to pass a hint through the Docker command line so Rancher will set up the container to connect to the overlay network.
+<br /> ` io.rancher.container.network `というラベルを Dockerのコマンドラインでヒントとして渡すことで、Rancher はオーバーレイネットワークに接続するコンテナを作成します。
 
-### Create a Multi-Container Application
+### マルチコンテナアプリケーションの作成
 
-We have shown you how to create individual containers and explained how they would be connected in our cross-host network. Most real-world applications, however, are made out of multiple services, with each service made up of multiple containers. A WordPress application, for example, could consist of the following services:
+個別のコンテナを作成する方法と、クロスホストネットワークでそれらがどのように接続されるかを説明しました。 しかし、実際のアプリケーションのほとんどは複数のサービスで構成されており、各サービスは複数のコンテナで構成されています。 たとえば、WordPressアプリケーションは、次のようなサービスで構成されます。
 
-  1. A load balancer. The load balancer redirects Internet traffic to the WordPress application.
-  2. A WordPress service consisting of two WordPress containers.
-  3. A database service consisting of one MySQL container.
+  1. ロードバランサー。ロードバランサーはインターネットからのリクエストをWordPressアプリケーションにリダイレクトします。
+  2. WordPressのサービスは、2つのWordPressコンテナで構成されます。
+  3. データベースサービスが、1つのMySQLコンテナで構成されます。
 
-The load balancer targets the WordPress service, and the WordPress service links to the MySQL service.
+ロードバランサーはWordPressサービスに接続し、WordPressサービスはMySQLサービスにリンクします。
 
-In this section, we will walk through how to create and deploy the WordPress application in Rancher.
+このセクションでは、RancherにWordPressアプリケーションを作成して展開する方法を説明します。
 
-Navigate to the **Stacks** page, if there are still no services, you can click on the **Add Service** button in the welcome screen. If there are already services, you can click on **Add Service** in any existing stack or create a new stack to add services in. If you need to create a new stack, click on **Add Stack**, provide a name and description and click **Create**. Then, click on **Add Service**.
+**スタック**ページに移動します。まだサービスがない場合は、ウェルカム画面の**サービスの追加**ボタンをクリックします。 すでにサービスがある場合は、既存のスタックの**サービスの追加**をクリックするか、新しいスタックを作成してサービスを追加することができます。 新しいスタックを作成する必要がある場合は、**スタックの追加**をクリックし、名前と説明を入力して**作成**をクリックします。 次に、**サービスの追加**をクリックします。
 
-First, we'll create a database service called *database* and use the mysql image. In the **Command** tab, add the environment variable `MYSQL_ROOT_PASSWORD=pass1`. Click **Create**. You will be immediately brought to a stack page, which will contain all the services.
+まず、*データベース*というデータベースサービスを作成し、mysqlイメージを使用します。 **コマンド**タブで、環境変数` MYSQL_ROOT_PASSWORD = pass1 ` を追加します。 **作成**をクリックします。 すべてのサービスが含まれるスタックページがすぐに表示されます。
 
-Next, click on **Add Service** again to add another service. We'll add a WordPress service and link to the mysql service. Let's use the name, *mywordpress*, and use the wordpress image. We'll move the slider to have the scale of the service be 2 containers. In the **Service Links**, add the *database* service and provide the name *mysql*. Just like in Docker, Rancher will link the necessary environment variables in the WordPress image from the linked database when you select the name as *mysql*. Click **Create**.
+次に、もう一度 **サービスの追加** をクリックして、別のサービスを追加します。 WordPressサービスとmysqlサービスへのリンクを追加します。 * mywordpress * という名前を使用して、wordpressイメージを使用しましょう。 スライダを動かして、サービスのスケールをコンテナ2つにします。 **サービスリンク**に*データベース*サービスを追加し、* mysql *という名前を指定します。 Dockerの場合と同様に、Rancherは、* mysql *の名前を選択すると、リンクされたデータベースとしてWordPressイメージに必要な環境変数をリンクします。 **作成**をクリックします。
 
-Finally, we'll create our load balancer. Click on the dropdown menu icon next to the **Add Service** button. Select **Add Load Balancer**. Provide a name like *wordpresslb* and select a source port and target port on the host that you'll use to access the wordpress application. In this case, we'll use `80` for both ports. The target service will be *mywordpress* service. Click **Create**.
+最後にロードバランサーを作成します。 **サービスの追加** ボタンの横にあるドロップダウンメニューアイコンをクリックします。 ** ロードバランサーの追加 **を選択します。 * wordpresslb *のような名前を入力し、wordpress アプリケーションにアクセスするために使用するホスト上のソースポートとターゲットポートを選択します。 この場合、両方で` 80 `番ポートを使用します。 ターゲットとするサービスは* mywordpress *になります。 **作成**をクリックします。
 
-Our multi-service application is now complete! On the **Stacks** page, you'll be able to find the exposed port of the load balancer as a link. Click on that link and a new browser will open, which will display the wordpress application.
+マルチサービスアプリケーションが完成しました！ ** スタック **ページで、ロードバランサが公開しているポートをリンクとして見つけることができます。 そのリンクをクリックすると、新しいブラウザが開き、wordpressアプリケーションが表示されます。
 
-### Create a Multi-Container Application using Rancher Compose
+### Rancher Composeを使用して複数コンテナアプリケーションを作成する
 
-In this section, we will show you how to create and deploy the same WordPress application we created in the previous section using a command-line tool called Rancher Compose.
+このセクションでは、Rancher Composeというコマンドラインツールを使用して前のセクションで作成した同じWordPressアプリケーションを作成して配備する方法を説明します。
 
-The Rancher Compose tool works just like the popular Docker Compose tool. It takes in the same `docker-compose.yml` file and deploys the application on Rancher. You can specify additional attributes in a `rancher-compose.yml` file which extends and overwrites the `docker-compose.yml` file.
+Rancher Composeツールは、一般的なDocker Composeツールと同じように機能します。 これは同じ` docker-compose.yml `ファイルを取り込み、Rancherにアプリケーションをデプロイします。 ` docker-compose.yml `ファイルを拡張して上書きする` rancher-compose.yml `ファイルに、追加の属性を指定することができます。
 
-In the previous section, we created a Wordpress application with a load balancer. If you had created it in Rancher, you can download the files directly from our UI by selecting **Export Config** from the stack's dropdown menu. The `docker-compose.yml` and `rancher-compose.yml` files would look like this:
+前のセクションでは、ロードバランサを備えたWordpressアプリケーションを作成しました。 Rancherで作成した場合は、スタックのドロップダウンメニューから** Export Config **を選択して、UIから直接ファイルをダウンロードできます。 ` docker-compose.yml `と` rancher-compose.yml `ファイルは次のようになります。
 
 #### Example docker-compose.yml
 
@@ -158,9 +158,9 @@ database:
   scale: 1
 ```
 
-Download the Rancher Compose binary from the Rancher UI by clicking on `Download CLI`, which is located on the right side of the footer. We provide the ability to download binaries for Windows, Mac, and Linux.
+フッターの右側にある` CLIのダウンロード`をクリックして、RancherのUIからRancher Composeバイナリをダウンロードします。 Windows、Mac、Linux用のバイナリを提供しています。
 
-In order for services to be launched in Rancher using Rancher Compose, you will need to set some variables in Rancher Compose. You will need to create an [environment API Key]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/api-keys/) in the Rancher UI. Click on **API** and click on **Add API Key**. Save the username (access key) and password (secret key). Set up the environment variables needed for Rancher Compose: `RANCHER_URL`, `RANCHER_ACCESS_KEY`, and `RANCHER_SECRET_KEY`.
+Rancher Composeを使用してRancherでサービスを開始するには、Rancher Composeでいくつかの変数を設定する必要があります。 Rancher UIで[環境APIキー]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/api-keys/)を作成する必要があります。 ** API **をクリックし、** APIキーを追加**をクリックします。 ユーザー名 (アクセスキー) とパスワード (秘密キー) を保存します。 Rancher Composeに必要な環境変数を設定する: `RANCHER_URL`, `RANCHER_ACCESS_KEY`, and `RANCHER_SECRET_KEY`.
 
 ```bash
 # Set the url that Rancher is on
@@ -171,10 +171,10 @@ $ export RANCHER_ACCESS_KEY=<username_of_key>
 $ export RANCHER_SECRET_KEY=<password_of_key>
 ```
 
-Now, navigate to the directory where you saved `docker-compose.yml` and `rancher-compose.yml` and run the command.
+` docker-compose.yml `と` rancher-compose.yml `を保存したディレクトリに移動し、コマンドを実行します。
 
 ```bash
 $ rancher-compose -p NewWordpress up
 ```
 
-In Rancher, a new stack will be created called **NewWordPress** with all of the services launched.
+Rancherでは、** NewWordPress **という新しいスタックが作成され、すべてのサービスが起動されます。
