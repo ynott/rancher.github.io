@@ -100,7 +100,7 @@ $ docker run -d -it --label io.rancher.container.network=true ubuntu:14.04.2
 
 ロードバランサーは_ウェブ_ サービス(例 LetsChat) に接続し、_ウェブ_ サービスは_データーベース_ サービス(例 Mongo)にリンクします。
 
-このセクションでは、Rancherに[LetsChat](http://sdelements.github.io/lets-chat/) アプリケーションのコンテナを作成して展開する方法を説明します。
+このセクションでは、Rancherに [LetsChat](http://sdelements.github.io/lets-chat/) アプリケーションのコンテナを作成して展開する方法を説明します。
 
 **Stacks** 画面に移動します。まだサービスがない場合は、Welcome画面の **Define a Service** ボタンをクリックします。 Rancherに既にサービスが存在する場合は、既存のスタックの **Add Service** をクリックするか、新しいスタックを作成してサービスを追加できます。 新しいスタックを作成する必要がある場合は、 **Add Stack** をクリックし、名前と説明を入力して **Create** をクリックします。 次に新規スタックで **Add Service** をクリックします。
 
@@ -114,7 +114,7 @@ LetsChatアプリケーションが完成しました！ **Stacks**画面で、�
 
 ### Rancher CLI を使用して複数コンテナアプリケーションを作成する
 
-このセクションでは、[Rancher CLI]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/cli/)というコマンドラインツールを使用して前のセクションで作成したと同じ[LetsChat](http://sdelements.github.io/lets-chat/)アプリケーションを作成して展開する方法を説明します。
+このセクションでは、[Rancher CLI]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/cli/) というコマンドラインツールを使用して前のセクションで作成したと同じ[LetsChat](http://sdelements.github.io/lets-chat/)アプリケーションを作成して展開する方法を説明します。
 
 Rancherサービスが起動したときに、Rancher CLIツールは一般的なDocker Composeツールと同じように機能します。 これは、同じように `docker-compose.yml` ファイルを読み込んでRancherにアプリケーションをデプロイします。 `rancher-compose.yml` ファイルを利用すると `docker-compose.yml` ファイルを拡張して上書きする追加の属性を指定することができます。
 
