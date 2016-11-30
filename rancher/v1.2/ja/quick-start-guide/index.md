@@ -1,26 +1,31 @@
-* * *
+---
 
-title: Quick Start Guide layout: rancher-default-v1.2 version: v1.2 lang: ja redirect_from: - /rancher/quick-start-guide/ - /rancher/latest/en/quick-start-guide/
+title: Quick Start Guide
+layout: rancher-default-v1.2
+version: v1.2
+lang: ja
+redirect_from:
+  - /rancher/quick-start-guide/
+  - /rancher/latest/en/quick-start-guide/
+---
 
-* * *
-
-## ## クイック スタート ガイド
+## クイック スタート ガイド ##
 
 このガイドでは、1台のLinuxサーバーに全てインストールして動く、最も簡単なRancherをインストールしてみます。
 
 ### Linuxホストを準備する
 
-3.10 + のカーネルが最低限入っている64 ビット Ubuntu 16.04 と Linux ホストを準備します。 ノートパソコンでも、仮想環境でも、物理サーバーも利用可能です。 Linux ホストは少なくとも**1 GB** のメモリを持っていることを確認してください。 [Docker](https://www.docker.com/) をホストにインストールします。
+3.10 + のカーネルが最低限入っている64 ビット Ubuntu 16.04 と Linux ホストを準備します。 ノートパソコンでも、仮想環境でも、物理サーバーも利用可能です。 Linux ホストには少なくとも **1GB** のメモリがあることを確認してください。 [Docker](https://www.docker.com/) をホストにインストールします。
 
 サーバーにDockerをインストールするには、 [Docker](https://docs.docker.com/engine/installation/linux/ubuntulinux/) 社の手引きを参照してください。
 
-> **注:**現在、Windows と Mac のDockerはサポートされていません。
+> **注:** 現在、Windows と Mac のDockerはサポートされていません。
 
 ### Rancher サーバータグ
 
-`rancher/server:latest` タグはRancherの安定版ビルドにつけられます。本番環境でのデプロイで、Rancher社が推奨しているものです。 それぞれのマイナーリリースのタグでは、それらの特定のバージョンでのドキュメントを提供します。
+`rancher/server:latest` タグはRancherの安定版ビルドにつけられます。Rancher社が推奨している本番環境展開用です。 各マイナーリリースタグに対して、それぞれのバージョンでのドキュメントを提供します。
 
-もし、CIの自動化フレームワークで検証済の最新の開発版のビルドを試してみるのに興味があるのであれば、最新の開発版のリリースタグが付いた[リリースページ](https://github.com/rancher/rancher/releases) を確認してください。 これらのリリースは本番環境でのデプロイ用ではありません。 すべての開発ビルドには、それが開発リリースであることを示す`*-pre{n}` という接尾辞が付加されます。 `rc{n}` サフィックスの付いているリリースはどれも使用しないでください。 `rc` ビルドは、Rancherチームが開発版ビルドをテストするためのものです。
+もし、CI自動化フレームワークで検証済の最新開発版のビルドに興味があれば、最新の開発版のリリースタグが付いた[リリースページ](https://github.com/rancher/rancher/releases) を確認してください。 このリリースは本番環境デプロイ用ではありません。 開発ビルドには、全て開発リリースであることを示す`*-pre{n}` という接尾辞が付加されます。 `rc{n}` サフィックスの付いているリリースはいずれも使用しないでください。 `rc` ビルドは、Rancherチームが開発版ビルドをテストするためのものです。
 
 ### Rancherサーバーを動かす
 
@@ -32,11 +37,11 @@ $ sudo docker run -d --restart=unless-stopped -p 8080:8080 rancher/server
 $ sudo docker logs -f <CONTAINER_ID>
 ```
 
-Rancherサーバーの起動に数分おまちください。 `が表示されたら.... Startup Succeeded, Listening on port...`, RancherのUIは起動して稼働中です。 ログのこの行が表示されたら、ほとんど設定は終了です。 この出力の後に追加のログが存在する可能性があるので、初期起動時のログの最後の行であるとは考えないでください。
+Rancherサーバーの起動に数分おまちください。 `.... Startup Succeeded, Listening on port....` が表示されたら、RancherのUIは起動して稼働中です。 ログのこの行が表示されたら、ほとんど設定は終了です。 この出力の後に追加のログが出力される可能性があるので、これが初期起動時のログの最後の行であるとは限りません。
 
-UIは`8080`ポートで公開されています。したがって、UIを表示するには`http://<SERVER_IP>:8080`を開いてください。 Rancherサーバーとブラウザーが同じホストで動いている場合は、次のように実際のIPを使ってください。`http://192.168.1.100:8080` 。`http://localhost:8080` や `http://127.0.0.1:8080`としないようにしてください。
+UIは `8080` ポートで動いているので、表示するには `http://<SERVER_IP>:8080` をブラウザーで開いてください。 Rancherサーバーとブラウザーが同じホストで動いている場合は、`http://192.168.1.100:8080` のように実IPを使ってください。`http://localhost:8080` や `http://127.0.0.1:8080` としないようにしてください。
 
-> **注:** Rancherサーバーにはアクセス制御が設定されておらず、このIPアドレスにアクセスできる誰でもこのUIとAPIを利用できます。 [アクセス制御]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/configuration/access-control/)を設定することをお勧めします。
+> **注:** Rancherサーバーにはアクセス制限が設定されておらず、このIPアドレスにアクセスできる誰でもこのUIとAPIを利用できます。 [アクセス制限]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/configuration/access-control/)を設定することをお勧めします。
 
 ### ホストを追加
 
