@@ -46,7 +46,7 @@ UIは `8080` ポートで動いているので、表示するには `http://<SER
 
 わかりやすくするためにRancherサーバーを実行しているサーバーをRancherのホストとして追加します。実際の運用では、専用のRancherを実行するホストを動かすことをお勧めします。
 
-ホストを追加するには、UIから **Infrastructure** をクリックして、**Hosts** ページを表示してください。 **Add Host**をクリックします。 Rancherで利用するURLを選択するように指示されます。 このURLは、Rancherサーバーが動いているURLになり、これから追加するRancherホストから接続可能なものでなくてはなりません。 この設定は、RancherサーバーがファイヤウォールでNATされたり、ロードバランサーを介してインターネットに公開される場合に便利です。 ホストに`192.168.*.*`のようなプライベートやローカルIPなアドレスがついていた場合、Rancherサーバーにホストが本当にURLにアクセスできるかどうかを尋ねる警告が表示されます。
+ホストを追加するには、UIから **Infrastructure** をクリックして、**Hosts** ページを表示してください。 **Add Host** をクリックします。 Rancherで利用するURLを選択するように指示されます。 このURLは、Rancherサーバーが動いているURLになり、これから追加するRancherホストから接続可能なものでなくてはなりません。 この設定は、RancherサーバーがファイヤウォールでNATされたり、ロードバランサーを介してインターネットに公開される場合に便利です。 ホストに`192.168.*.*`のようなプライベートやローカルIPなアドレスがついていた場合、Rancherサーバーにホストが本当にURLにアクセスできるかどうかを尋ねる警告が表示されます。
 
 今のところ、これらの警告は無視してRancherサーバーホスト自体を追加することができます。 **Save** をクリックします。 デフォルトでは、Rackherエージェントコンテナを起動するDockerコマンドを提供する **Custom** オプションが選択されます。 RancherがDocker Machineを使用してホストを起動するクラウドプロバイダ向けのオプションもあります。
 
@@ -58,7 +58,7 @@ Rancher UIで **Close** をクリックすると、**Infrastructure** -> **Hosts
 
 ### UIを使用してコンテナを作成する
 
-**Stacks** 画面に移動して、まだサービスがない場合は、Welcome画面の **Define a service** ボタンをクリックします。 Rancherに既にサービスが存在する場合は、既存のスタックの **Add Service** をクリックするか、新しいスタックを作成してサービスを追加できます。 新しいスタックを作成する必要がある場合は、 **Add Stack** をクリックし、名前と説明を入力して **Create** をクリックします。 次に、 **Add Service** をクリックします。
+**Stacks** 画面に移動して、まだサービスがない場合は、Welcome画面の **Define a service** ボタンをクリックします。 Rancherに既にサービスが存在する場合は、既存のスタックの **Add Service** をクリックするか、新しいスタックを作成してサービスを追加できます。 新しいスタックを作成する必要がある場合は、 **Add Stack** をクリックし、名前と説明を入力して **Create** をクリックします。 次に新規スタックで **Add Service** をクリックします。
 
 "first-container"のような名前でサービスを追加します。 デフォルトの設定を使用して **Create** をクリックするだけです。 Rancherは、ホスト上でコンテナの起動を開始します。ホストのIPアドレスにかかわらず、Rancherがipsecインフラストラクチャサービスで管理オーバーレイネットワークを作成したため、最初のコンテナのIPアドレスは `10.42 *.*` の範囲になります。管理オーバーレイネットワークで、コンテナが異なるホスト間で相互に通信できるように管理しています。
 
@@ -86,81 +86,96 @@ $ docker run -d -it --label io.rancher.container.network=true ubuntu:14.04.2
 
 ### マルチコンテナアプリケーションの作成
 
-個別のコンテナを作成する方法と、クロスホストネットワークでそれらがどのように接続されるかを説明しました。 しかし、実際のアプリケーションのほとんどは複数のサービスで構成されており、各サービスは複数のコンテナで構成されています。 たとえば、WordPressアプリケーションは、次のようなサービスで構成されます。
+個別のコンテナを作成する方法と、ホスト間ネットワークでそれらがどのように接続されるかを説明しました。 しかし、実際のアプリケーションのほとんどは複数のサービスで構成されており、各サービスは複数のコンテナで構成されています。 たとえば、[LetsChat](http://sdelements.github.io/lets-chat/)アプリケーションは、次のようなサービスで構成されます。
 
-  1. ロードバランサー。ロードバランサーはインターネットからのリクエストをWordPressアプリケーションにリダイレクトします。
-  2. WordPressのサービスは、2つのWordPressコンテナで構成されます。
-  3. データベースサービスが、1つのMySQLコンテナで構成されます。
+  1. ロードバランサー。ロードバランサーはインターネットからのリクエストを" LetsChat" アプリケーションに中継します。
+  2. "LetsChat" コンテナ2つで _ウェブ_ サービスが構成されます。
+  3. "Mongo" コンテナ1つで _データーベース_ サービスが、構成されます。
 
-ロードバランサーはWordPressサービスに接続し、WordPressサービスはMySQLサービスにリンクします。
+ロードバランサーは_ウェブ_ サービス(例 LetsChat) に接続し、_ウェブ_ サービスは_データーベース_ サービス(例 Mongo)にリンクします。
 
-このセクションでは、RancherにWordPressアプリケーションを作成して展開する方法を説明します。
+このセクションでは、Rancherに[LetsChat](http://sdelements.github.io/lets-chat/) アプリケーションのコンテナを作成して展開する方法を説明します。
 
-**スタック**ページに移動します。まだサービスがない場合は、ウェルカム画面の**サービスの追加**ボタンをクリックします。 すでにサービスがある場合は、既存のスタックの**サービスの追加**をクリックするか、新しいスタックを作成してサービスを追加することができます。 新しいスタックを作成する必要がある場合は、**スタックの追加**をクリックし、名前と説明を入力して**作成**をクリックします。 次に、**サービスの追加**をクリックします。
+**Stacks** 画面に移動します。まだサービスがない場合は、Welcome画面の **Define a Service** ボタンをクリックします。 Rancherに既にサービスが存在する場合は、既存のスタックの **Add Service** をクリックするか、新しいスタックを作成してサービスを追加できます。 新しいスタックを作成する必要がある場合は、 **Add Stack** をクリックし、名前と説明を入力して **Create** をクリックします。 次に新規スタックで **Add Service** をクリックします。
 
-まず、*データベース*というデータベースサービスを作成し、mysqlイメージを使用します。 **コマンド**タブで、環境変数` MYSQL_ROOT_PASSWORD = pass1 ` を追加します。 **作成**をクリックします。 すべてのサービスが含まれるスタックページがすぐに表示されます。
+まず、`mongo` イメージを使い *データベース* というサービスを作成します。 **Create** をクリックします。_データーベース_ サービスが含まれるスタックページがすぐに表示されます。
 
-次に、もう一度 **サービスの追加** をクリックして、別のサービスを追加します。 WordPressサービスとmysqlサービスへのリンクを追加します。 * mywordpress * という名前を使用して、wordpressイメージを使用しましょう。 スライダを動かして、サービスのスケールをコンテナ2つにします。 **サービスリンク**に*データベース*サービスを追加し、* mysql *という名前を指定します。 Dockerの場合と同様に、Rancherは、* mysql *の名前を選択すると、リンクされたデータベースとしてWordPressイメージに必要な環境変数をリンクします。 **作成**をクリックします。
+次に、もう一度 **Add Service** をクリックして、別のサービスを追加します。 LetsChatサービスと_データーベース_ サービスとをリンクをさせます。 `sdelements/lets-chat`イメージを使用して、`web` 名前を付けます。UI上でスライダを動かして、サービスのスケールをコンテナ2つにします。 **Service Links** に`mongo` という名前の _データベース_ サービスを追加します。 Dockerの場合と同様に、Rancherは、`mongo` の名前を選択すると、リンクされたデータベースとして `letschat` イメージに必要な環境変数をリンクします。 **Create** をクリックします。
 
-最後にロードバランサーを作成します。 **サービスの追加** ボタンの横にあるドロップダウンメニューアイコンをクリックします。 ** ロードバランサーの追加 **を選択します。 * wordpresslb *のような名前を入力し、wordpress アプリケーションにアクセスするために使用するホスト上のソースポートとターゲットポートを選択します。 この場合、両方で` 80 `番ポートを使用します。 ターゲットとするサービスは* mywordpress *になります。 **作成**をクリックします。
+最後にロードバランサーを作成します。 **Add Service** ボタンの横にあるドロップダウンメニューアイコンをクリックします。 **Add Load Balancer** を選択します。 `letschatapplb` のような名前を入力し、接続先アプリケーションにアクセスするために使用するホスト上のソースポート(例 `80`)とターゲットサービス(例 _web_)とターゲットポート(例 `8080`) を選択します。 この場合、_ウェブ_ サービスで `8080`番ポートを使用します。 
 
-マルチサービスアプリケーションが完成しました！ ** スタック **ページで、ロードバランサが公開しているポートをリンクとして見つけることができます。 そのリンクをクリックすると、新しいブラウザが開き、wordpressアプリケーションが表示されます。
+LetsChatアプリケーションが完成しました！ **Stacks**画面で、ロードバランサが公開しているポートをリンクとして見つけることができます。 そのリンクをクリックすると、新しいブラウザが開き、LetsChatアプリケーションが表示されます。
 
-### Rancher Composeを使用して複数コンテナアプリケーションを作成する
+### Rancher CLI を使用して複数コンテナアプリケーションを作成する
 
-このセクションでは、Rancher Composeというコマンドラインツールを使用して前のセクションで作成した同じWordPressアプリケーションを作成して配備する方法を説明します。
+このセクションでは、[Rancher CLI]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/cli/)というコマンドラインツールを使用して前のセクションで作成したと同じ[LetsChat](http://sdelements.github.io/lets-chat/)アプリケーションを作成して展開する方法を説明します。
 
-Rancher Composeツールは、一般的なDocker Composeツールと同じように機能します。 これは同じ` docker-compose.yml `ファイルを取り込み、Rancherにアプリケーションをデプロイします。 ` docker-compose.yml `ファイルを拡張して上書きする` rancher-compose.yml `ファイルに、追加の属性を指定することができます。
+Rancherサービスが起動したときに、Rancher CLIツールは一般的なDocker Composeツールと同じように機能します。 これは、同じように `docker-compose.yml` ファイルを読み込んでRancherにアプリケーションをデプロイします。 `rancher-compose.yml` ファイルを利用すると `docker-compose.yml` ファイルを拡張して上書きする追加の属性を指定することができます。
 
-前のセクションでは、ロードバランサを備えたWordpressアプリケーションを作成しました。 Rancherで作成した場合は、スタックのドロップダウンメニューから** Export Config **を選択して、UIから直接ファイルをダウンロードできます。 ` docker-compose.yml `と` rancher-compose.yml `ファイルは次のようになります。
+前のセクションでは、ロードバランサを備えたLetsChatアプリケーションを作成しました。 Rancherで作成していた場合、スタックのドロップダウンメニューから **Export Config** を選択して、UIから直接ファイルをダウンロードできます。 `docker-compose.yml` と `rancher-compose.yml` ファイルは次のようになります。
 
 #### Example docker-compose.yml
 
 ```yaml
-mywordpress:
-  tty: true
-  image: wordpress
-  links:
-  - database:mysql
-  stdin_open: true
-wordpresslb:
-  ports:
-  - 80:80
-  tty: true
-  image: rancher/load-balancer-service
-  links:
-  - mywordpress:mywordpress
-  stdin_open: true
-database:
-  tty: true
-  image: mysql
-  stdin_open: true
-  environment:
-    MYSQL_ROOT_PASSWORD: pass1
+version: '2'
+services:
+  letschatapplb:
+    #If you only have 1 host and also created the host in the UI,
+    # you may have to change the port exposed on the host.
+    ports:
+    - 80:80/tcp
+    labels:
+      io.rancher.container.create_agent: 'true'
+      io.rancher.container.agent.role: environmentAdmin
+    image: rancher/lb-service-haproxy:v0.4.2
+  web:
+    labels:
+      io.rancher.container.pull_image: always
+    tty: true
+    image: sdelements/lets-chat
+    links:
+    - database:mongo
+    stdin_open: true
+  database:
+    labels:
+      io.rancher.container.pull_image: always
+    tty: true
+    image: mongo
+    stdin_open: true
 ```
 
 #### Example rancher-compose.yml
 
 ```yaml
-mywordpress:
-  scale: 2
-wordpresslb:
-  scale: 1
-  load_balancer_config:
-    haproxy_config: {}
-  health_check:
-    port: 42
-    interval: 2000
-    unhealthy_threshold: 3
-    healthy_threshold: 2
-    response_timeout: 2000
-database:
-  scale: 1
+vversion: '2'
+services:
+  letschatapplb:
+    scale: 1
+    lb_config:
+      certs: []
+      port_rules:
+      - hostname: ''
+        path: ''
+        priority: 1
+        protocol: http
+        service: quickstartguide/web
+        source_port: 80
+        target_port: 8080
+    health_check:
+      port: 42
+      interval: 2000
+      unhealthy_threshold: 3
+      healthy_threshold: 2
+      response_timeout: 2000
+  web:
+    scale: 2
+  database:
+    scale: 1
 ```
+<br>
+フッターの右側にある **Download CLI** をクリックして、RancherのUIからRancher CLIバイナリをダウンロードします。 Windows、Mac、Linux用のバイナリを提供しています。
 
-フッターの右側にある` CLIのダウンロード`をクリックして、RancherのUIからRancher Composeバイナリをダウンロードします。 Windows、Mac、Linux用のバイナリを提供しています。
-
-Rancher Composeを使用してRancherでサービスを開始するには、Rancher Composeでいくつかの変数を設定する必要があります。 Rancher UIで[環境APIキー]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/api-keys/)を作成する必要があります。 ** API **をクリックし、** APIキーを追加**をクリックします。 ユーザー名 (アクセスキー) とパスワード (秘密キー) を保存します。 Rancher Composeに必要な環境変数を設定する: `RANCHER_URL`, `RANCHER_ACCESS_KEY`, and `RANCHER_SECRET_KEY`.
+Rancher CLIを使用してRancherでサービスを開始するには、いくつかの変数を設定する必要があります。 Rancher UIで[account API Key]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/api-keys/)を作成する必要があります。 **API** をクリックし、**Add Account API Key** をクリックします。 ユーザー名 (アクセスキー) とパスワード (秘密キー) を保存します。 Rancher CLIに必要な環境変数を設定します: `RANCHER_URL`, `RANCHER_ACCESS_KEY`, and `RANCHER_SECRET_KEY`.
 
 ```bash
 # Set the url that Rancher is on
@@ -170,11 +185,11 @@ $ export RANCHER_ACCESS_KEY=<username_of_key>
 # Set the secret key, i.e. password
 $ export RANCHER_SECRET_KEY=<password_of_key>
 ```
-
+<br>
 ` docker-compose.yml `と` rancher-compose.yml `を保存したディレクトリに移動し、コマンドを実行します。
 
 ```bash
-$ rancher-compose -p NewWordpress up
+$ rancher -p NewLetsChatApp up -d
 ```
 
-Rancherでは、** NewWordPress **という新しいスタックが作成され、すべてのサービスが起動されます。
+Rancherで **NewLetsChatApp** という新しいスタックが作成され、サービスがすべて起動されます。
