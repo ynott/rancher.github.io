@@ -56,6 +56,12 @@ Rancherサーバーを実行しているホストでこのコマンドを実行�
 
 Rancher UIで **Close** をクリックすると、**Infrastructure** -> **Hosts** 表示に戻ります。 数分後にホストが自動的に表示されます。
 
+### インフラストラクチャーサービス
+
+最初にRancherにログインすると自動的に [environment]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/environments/)になります。この[infrastructure services]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/rancher-services/)を開始するためにデフォルトのcattle [environment template]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/environments/#what-is-an-environment-template)が選択されます。この[infrastructure services]は、Rancherの持っている[dns]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/rancher-services/dns-service/)や[metadata]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/rancher-services/metadata-service)、[networking]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/rancher-services/networking)そして[health checks]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/cattle/health-checks/)のような機能の利点を活用するため有利なものです。これらのインフラストラクチャスタックは、**Stacks** -> **Infrastructure** にあります。これらのスタックは、ホストがRancherに完全に追加されるまで、`不健全な` 状態です。ホストを追加した後は、サービスを追加する前にすべてのインフラストラクチャスタックが `active` になるまで待つことをお勧めします。
+
+ホストでは、**Show System** チェックボックスをクリックしない限り、インフラストラクチャサービスのコンテナは非表示になります。
+
 ### UIを使用してコンテナを作成する
 
 **Stacks** 画面に移動して、まだサービスがない場合は、Welcome画面の **Define a service** ボタンをクリックします。 Rancherに既にサービスが存在する場合は、既存のスタックの **Add Service** をクリックするか、新しいスタックを作成してサービスを追加できます。 新しいスタックを作成する必要がある場合は、 **Add Stack** をクリックし、名前と説明を入力して **Create** をクリックします。 次に新規スタックで **Add Service** をクリックします。
@@ -88,9 +94,9 @@ $ docker run -d -it --label io.rancher.container.network=true ubuntu:14.04.2
 
 個別のコンテナを作成する方法と、ホスト間ネットワークでそれらがどのように接続されるかを説明しました。 しかし、実際のアプリケーションのほとんどは複数のサービスで構成されており、各サービスは複数のコンテナで構成されています。 たとえば、[LetsChat](http://sdelements.github.io/lets-chat/)アプリケーションは、次のようなサービスで構成されます。
 
-  1. ロードバランサー。ロードバランサーはインターネットからのリクエストを" LetsChat" アプリケーションに中継します。
-  2. "LetsChat" コンテナ2つで _ウェブ_ サービスが構成されます。
-  3. "Mongo" コンテナ1つで _データーベース_ サービスが、構成されます。
+  1. ロードバランサー ロードバランサーはインターネットからのリクエストを" LetsChat" アプリケーションに中継します。
+  2. _ウェブ_ サービス "LetsChat" コンテナ2つで構成されます。
+  3. _データーベース_ サービス "Mongo" コンテナ1つで構成されます。
 
 ロードバランサーは_ウェブ_ サービス(例 LetsChat) に接続し、_ウェブ_ サービスは_データーベース_ サービス(例 Mongo)にリンクします。
 
