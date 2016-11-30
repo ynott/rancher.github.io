@@ -179,9 +179,9 @@ services:
     scale: 1
 ```
 <br>
-フッターの右側にある **Download CLI** をクリックして、RancherのUIからRancher CLIバイナリをダウンロードします。 Windows、Mac、Linux用のバイナリを提供しています。
+フッター右側にある **Download CLI** をクリックして、RancherのUIからRancher CLIバイナリをダウンロードします。 Windows、Mac、Linux用のバイナリを提供しています。
 
-Rancher CLIを使用してRancherでサービスを開始するには、いくつかの変数を設定する必要があります。 Rancher UIで[account API Key]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/api-keys/)を作成する必要があります。 **API** をクリックし、**Add Account API Key** をクリックします。 ユーザー名 (アクセスキー) とパスワード (秘密キー) を保存します。 Rancher CLIに必要な環境変数を設定します: `RANCHER_URL`, `RANCHER_ACCESS_KEY`, and `RANCHER_SECRET_KEY`.
+Rancher CLIを使用してRancherでサービスを開始するには、いくつか環境変数を設定する必要があります。 Rancher UIで[account API Key]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/api-keys/)を作成します。 **API** をクリックし、**Add Account API Key** をクリックします。 ユーザー名 (アクセスキー) とパスワード (秘密キー) を保存します。 Rancher CLIに必要な次の環境変数を設定します: `RANCHER_URL`、`RANCHER_ACCESS_KEY` と `RANCHER_SECRET_KEY`
 
 ```bash
 # Set the url that Rancher is on
@@ -192,10 +192,10 @@ $ export RANCHER_ACCESS_KEY=<username_of_key>
 $ export RANCHER_SECRET_KEY=<password_of_key>
 ```
 <br>
-` docker-compose.yml `と` rancher-compose.yml `を保存したディレクトリに移動し、コマンドを実行します。
+`docker-compose.yml` と `rancher-compose.yml` を保存したディレクトリに移動し、コマンドを実行します。
 
 ```bash
 $ rancher -p NewLetsChatApp up -d
 ```
 
-Rancherで **NewLetsChatApp** という新しいスタックが作成され、サービスがすべて起動されます。
+Rancherで **NewLetsChatApp** という新しいスタックが作成され、サービスがすべて起動します
