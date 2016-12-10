@@ -22,21 +22,22 @@ Name | Description
 `environment`, `env`  | [Interact with environments](#rancher-environment-reference)
 `events`    |        [Displays resource change events](#rancher-events-reference)
 `exec`       |       [Run a command on a container](#rancher-exec-reference)
-`export`     |      [Export configuration yml for a stack as a tar archive](#rancher-export-reference)
+`export`     |      [Export configuration yml for a stack as a tar archive or to local files](#rancher-export-reference)
 `hosts`, `host`    |   [Operations on hosts](#rancher-hosts-reference)
 `logs`           |   [Fetch the logs of a container](#rancher-hosts-reference)
 `ps`            |    [Show services/containers](#rancher-ps-reference)
 `restart`       |   [Restart service, container](#rancher-restart-reference)
-`rm`          |      [Delete service, container, host, machine](#rancher-rm-reference)
+`rm`          |      [Delete service, container, stack, host, volume](#rancher-rm-reference)
 `run`         |     [Run services](#rancher-run-reference)
 `scale`       |      [Set number of containers to run for a service](#rancher-scale-reference)
 `ssh`         |      [SSH into host](#rancher-ssh-reference)
 `stacks`, `stack`  |   [Operations on stacks](#rancher-stacks-reference)
-`start`, `activate`  | [Start or activate service, container, host](#rancher-startactivate-reference)
-`stop`, `deactivate` | [Stop or deactivate service, container, host](#rancher-stopdeactivate-reference)
+`start`, `activate`  | [Start or activate service, container, host, stack](#rancher-startactivate-reference)
+`stop`, `deactivate` | [Stop or deactivate service, container, host, stack](#rancher-stopdeactivate-reference)
 `up`           |     [Bring all services up](#rancher-up-reference)
-`inspect`      |     [View details for service, container, host, enviroment, stack](#rancher-inspect-reference)
-`wait`        |      [Wait for resources service, container, host, environment, machine](#rancher-wait-reference)
+`volumes`, `volume` |   [Operations on volumes](#rancher-volumes-reference)
+`inspect`      |     [View details for service, container, host, environment, stack, volume](#rancher-inspect-reference)
+`wait`        |      [Wait for resources service, container, host, stack, machine, projectTemplate](#rancher-wait-reference)
 `help`        |     Shows a list of commands or help for one command
 
 <br>
@@ -70,16 +71,26 @@ By default, the timeout for waiting will be ten minutes, but if you want to chan
 
 You can also define which specific state of a resource to be in before exiting, by using `--wait-state`.
 
-
 ### Rancher Catalog Reference
 
 The `rancher catalog` command provides operations around catalog templates.
+
+#### Options
+
+Name | Description
+----|-----
+`--quiet`, `-q`     Only display IDs
+`--format` value  'json' or Custom format: {{.Id}} {{.Name}}
+`--system`, `-s`    Show system templates, not user
+`--help`, `-h`      show help
 
 #### Subcommands
 
 Name | Description
 ----|-----
 `ls` | `List catalog templates`
+`install` |  Install catalog template
+`help`    |  Shows a list of commands or help for one command
 
 ##### Rancher Catalog Ls
 
@@ -91,6 +102,10 @@ $ rancher catalog ls
 # Lists all catalog templates in the k8sEnv environment
 $ rancher --env k8sEnv catalog ls
 ```
+
+##### Rancher Catalog install
+
+The `rancher catalog install` command installs catalog templates into your environment.
 
 ### Rancher Config Reference
 
@@ -367,10 +382,7 @@ $ rancher ps -c
 ID        NAME             IMAGE                           STATE     HOST      DETAIL
 1i1       Default_blog_1   ghost                           running   1h1       
 1i2       Default_blog_2   ghost                           running   1h2       
-1i3       Default_blog_3   ghost                           running   1h3       
-1i4       Network Agent    rancher/agent-instance:v0.8.1   running   1h1       
-1i5       Network Agent    rancher/agent-instance:v0.8.1   running   1h3       
-1i6       Network Agent    rancher/agent-instance:v0.8.1   running   1h2   
+1i3       Default_blog_3   ghost                           running   1h3  
 ```
 
 The `detail` column will provide the current status of the service.
@@ -540,8 +552,10 @@ Name | Description
 
 
 ```bash
+# Add in -d at the end to not block and log
 $ rancher up -s <stackName> -d
 ```
+### Rancher volumes Reference
 
 ### Rancher inspect Reference
 

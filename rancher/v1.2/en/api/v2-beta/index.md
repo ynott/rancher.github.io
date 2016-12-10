@@ -5,13 +5,26 @@ version: v1.2
 lang: en
 apiVersion: v2-beta
 redirect_from:
+  - /rancher/api/
   - /rancher/api/v2-beta/
+  - /rancher/latest/en/api/
 ---
 
 ## How to use the API
 ---
 
 The API has its own user interface accessible from a web browser.  This is an easy way to see resources, perform actions, and see the equivalent cURL or HTTP request & response.  To access it, click on **API** to find the URL endpoint.
+
+### Terminology
+
+Some of the resource type names used in the API do not match the current terminology used in the UI.  In particular:
+
+| UI | API | Description |
+|----|-----|-------------|
+| [Environment]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/environments/) | [project]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/api-resources/project) | A group of physical resources, such as [hosts]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/api-resources/host) |
+
+<br>
+In the documentation, we have used the UI term in descriptions and have provided additional disclaimers on the differences.  This confusion will be cleared up in a future version of the API.
 
 ### Authentication
 
@@ -44,7 +57,7 @@ Account keys can create new Environments,  and have can be used to access multip
 
 ### Making requests
 
-The API is generally RESTful but has several features to make the definition of everything discoverable by a client so that generic clients can be written instead of having to write specific code for every type of resource.  For painfully detailed info about the generic API spec, [see here](https://github.com/rancher/api-spec/blob/master/specification.md).
+The API is generally RESTful but has several features to make the definition of everything discoverable by a client so that generic clients can be written instead of having to write specific code for every type of resource.  For detailed info about the generic API spec, [see here](https://github.com/rancher/api-spec/blob/master/specification.md).
 
 - Every type has a Schema which describes:
   - The URL to get to the collection of this type of resources

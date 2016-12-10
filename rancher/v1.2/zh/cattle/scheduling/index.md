@@ -2,9 +2,11 @@
 title: Scheduling Services in Cattle Environments
 layout: rancher-default-v1.2
 version: v1.2
-lang: zh
+lang: en
 redirect_from:
-  - /rancher/latest/zh/cattle/scheduling/
+  - /rancher/rancher-compose/scheduling/
+  - /rancher/rancher-ui/scheduling/
+  - /rancher/latest/en/cattle/scheduling/
 ---
 
 ## Scheduling Services
@@ -40,7 +42,7 @@ For [services]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/cattle/ad
 #### Option 1: Run _all_ containers on a specific host
 By selecting this option, the container/service will be started on a specific host. If your host goes down, then the container will also go down. If you create a container from the container page, even if there is a port conflict, the container will be started. If you create a service of scale greater than 1 and there is a port conflict, your service might get stuck in _Activating_ state until you edit the scale value of the service.
 
-#### Option 2: Automatically pick a host matching scheduling rulesf
+#### Option 2: Automatically pick a host matching scheduling rules
 By selecting this option, you have the flexibility to choose your scheduling rules. Any host that follows all the rules is a host that could have the container started on. You can add rules by clicking on the **+** button.
 
 For [load balancers]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/cattle/adding-load-balancers/), only option 2 is available due to port conflicts. You are only given the choice to add scheduling rules. Click on the **Scheduling** tab. You can add as many scheduling rules as you want by clicking on the **Add Scheduling Rule** button.
@@ -104,25 +106,27 @@ labels:
 
 #### Global Service
 
-Making a service into a global service is the equivalent of selecting **Always run one instance of this container on every host** in the UI. This means that a container will be started on any host in the [environment]{{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/environments/). If a new host is added to the environment, and the host fulfills the global service's host requirements, the service will automatically be started.
+Making a service into a global service is the equivalent of selecting **Always run one instance of this container on every host** in the UI. This means that a container will be started on any host in the [environment]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/environments/). If a new host is added to the environment, and the host fulfills the global service's host requirements, the service will automatically be started.
 
 Currently, we only support global services with host labels fields that are using the hard condition. This means that only labels that are related to `host_labels` will be adhered to when scheduling and it **must** or **must not** equal the values. Any other label types will be ignored.
 
 ##### Example `docker-compose.yml`
 
 ```yaml
-wordpress:
-  labels:
-    # Make wordpress a global service
-    io.rancher.scheduler.global: 'true'
-    # Make wordpress only run containers on hosts with a key1=value1 label
-    io.rancher.scheduler.affinity:host_label: key1=value1
-    # Make wordpress only run on hosts that do not have a key2=value2 label
-    io.rancher.scheduler.affinity:host_label_ne: key2=value2
-  image: wordpress
-  links:
+version: '2'
+services:
+  wordpress:
+    labels:
+      # Make wordpress a global service
+      io.rancher.scheduler.global: 'true'
+      # Make wordpress only run containers on hosts with a key1=value1 label
+      io.rancher.scheduler.affinity:host_label: key1=value1
+      # Make wordpress only run on hosts that do not have a key2=value2 label
+      io.rancher.scheduler.affinity:host_label_ne: key2=value2
+    image: wordpress
+    links:
     - db: mysql
-  stdin_open: true
+    stdin_open: true
 ```
 
 #### Finding Hosts with Host Labels

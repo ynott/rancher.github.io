@@ -12,17 +12,27 @@ redirect_from:
 
 The Rancher catalog service requires private catalogs to be structured in a specific format in order for the catalog service to be able to translate it into Rancher.
 
-### Directory Structure
+### Template Folders
 
-Catalog templates are displayed in Rancher based on what cluster management type of environment that you are in.
+Catalog templates are displayed in Rancher based on what container orchestration type that was selected for the environment.
+
+#### Templates based on Orchestration type
 
 * _Cattle_ orchestration: Entries in the UI are from the `templates` folder
 * _[Kubernetes]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/kubernetes/)_ orchestration: Entries in the UI are from the `kubernetes-templates` folder
 * _[Swarm]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/swarm/)_ orchestration: Entries in the UI are from the `swarm-templates` folder
 * _[Mesos]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/mesos/)_ orchestration: Entries in the UI are from the `mesos-templates` folder
 
+### Infrastructure Services Templates
+
+The [infrastructure services]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/rancher-services/) that are available to be enabled in an [environment template]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/environments/#what-is-an-environment-template), are from the `infra-templates` folder of any catalog enabled in Rancher.
+
+These services are also available from the **Catalog** tab, and you will be able to see all the infrastructure services even though they may not work with the selected orchestration type. It's recommended to select infrastructure services during environment template creation versus launching them directly from the catalog. 
+
+### Directory Structure
+
 ```
--- templates OR kubernetes-templates OR swarm-templates
+-- templates (Or any of templates folder)
   |-- cloudflare
   |   |-- 0
   |   |   |-- docker-compose.yml
@@ -60,7 +70,7 @@ projectURL: # A URL related to the catalog entry
 ```
 <br>
 
-* The second file is a the icon image for the catalog entry. The file must be prefixed with `catalogIcon-`.
+* The second file is the icon image for the catalog entry. The file must be prefixed with `catalogIcon-`.
 
 For every catalog entry, there will be a minimum of three items: `config.yml`, `catalogIcon-entry.svg`, and the `0` folder, which holds the first version of the catalog entry.
 
@@ -78,12 +88,13 @@ An optional `README.md` is possible to be created, which provides a lengthy desc
 **`rancher-compose.yml`**
 
 ```yaml
-.catalog:
+version: '2'
+catalog:
   name: # Name of the versioned template of the Catalog Entry
   version: # Version of the versioned template of the Catalog Entry
   description: # Description of the versioned template of the Catalog Entry
   minimum_rancher_version: # The minimum version of Rancher that supports the template, v1.0.1 and 1.0.1 are acceptable inputs
-  maximum_rancher_version: # The minimum version of Rancher that supports the template, v1.0.1 and 1.0.1 are acceptable inputs
+  maximum_rancher_version: # The maximum version of Rancher that supports the template, v1.0.1 and 1.0.1 are acceptable inputs
   upgrade_from: # The previous versions that this template can be upgraded from
   questions: #Used to request user input for configuration options
 ```
@@ -102,6 +113,7 @@ The `questions` section of `.catalog` is used to allow the user to change the co
 Each configuration option is a list item in the `questions` section of the `rancher-compose.yml`.
 
 ```yaml
+version: '2'
 .catalog:
   questions:
     - variable: # A single word that is used to pair the question and answer.
@@ -127,7 +139,8 @@ Eligible formats are:
 * `enum` A drop-down menu will be shown in the UI and the `options` section will be populated in the drop-down.
 
 ```yaml
-.catalog:
+version: '2'
+catalog:
   questions:
     - variable:
       label:
@@ -141,7 +154,8 @@ Eligible formats are:
 * `multiline` A multiple line textbox will be shown in the UI.
 
 ```yaml
-.catalog:
+version: '2'
+catalog:
   questions:
     - variable:
       label:
@@ -157,7 +171,8 @@ Eligible formats are:
 * `certificate` A drop down of all available certificates in the environment.
 
 ```yaml
-.catalog:
+version: '2'
+catalog:
   questions:
     - variable:
       label:
