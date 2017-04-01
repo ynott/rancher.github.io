@@ -5,8 +5,7 @@ version: v1.2
 lang: en
 apiVersion: v1
 redirect_from:
-  - /rancher/api/access-control/
-  - /rancher/latest/en/api/access-control/
+  - /rancher/v1.2/zh/api/v1/access-control/
 ---
 
 ## Setting up Access Control using the API

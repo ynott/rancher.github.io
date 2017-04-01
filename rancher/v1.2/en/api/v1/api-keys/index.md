@@ -5,8 +5,7 @@ version: v1.2
 lang: en
 apiVersion: v1
 redirect_from:
-  - /rancher/configuration/api-keys/
-  - /rancher/latest/en/api/api-keys/
+  - /rancher/v1.2/zh/api/v1/api-keys/
 ---
 
 ## What are API Keys

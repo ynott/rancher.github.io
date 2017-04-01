@@ -4,6 +4,8 @@ layout: rancher-api-v2-beta-default-v1.2
 version: v1.2
 lang: en
 apiVersion: v2-beta
+redirect_from:
+  - /rancher/v1.2/zh/api/v2-beta/api-resources/port/
 ---
 
 ## port
@@ -36,7 +38,7 @@ privatePort | int  |
 protocol | string  | 
 publicIpAddressId | [ipAddress]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/ipAddress/)  | 
 removed | date  | The date of when the port was removed
-state | enum  | The current state of the port. The options are activating, active, deactivating, inactive, purged, purging, registering, removed, removing, requested, restoring, updating-active, updating-inactive.
+state | enum  | The current state of the port. The options are `activating`, `active`, `deactivating`, `inactive`, `purged`, `purging`, `registering`, `removed`, `removing`, `requested`, `restoring`, `updating-active`, `updating-inactive`.
 transitioning | enum  | Whether or not the port is in a transitioning state
 transitioningMessage | string  | The message to show while in a transitioning state
 transitioningProgress | int  | The percentage remaining in the transitioning process of the port

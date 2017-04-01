@@ -4,6 +4,8 @@ layout: rancher-api-v2-beta-default-v1.2
 version: v1.2
 lang: en
 apiVersion: v2-beta
+redirect_from:
+  - /rancher/v1.2/zh/api/v2-beta/api-resources/mount/
 ---
 
 ## mount
@@ -32,7 +34,7 @@ kind | string  |
 path | string  | 
 permissions | string  | 
 removed | date  | The date of when the mount was removed
-state | enum  | The current state of the mount. The options are activating, active, deactivating, inactive, removed, removing, requested.
+state | enum  | The current state of the mount. The options are `activating`, `active`, `deactivating`, `inactive`, `removed`, `removing`, `requested`.
 transitioning | enum  | Whether or not the mount is in a transitioning state
 transitioningMessage | string  | The message to show while in a transitioning state
 transitioningProgress | int  | The percentage remaining in the transitioning process of the mount

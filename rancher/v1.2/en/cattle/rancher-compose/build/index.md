@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/rancher-compose/build/
-  - /rancher/latest/en/cattle/rancher-compose/build/
+  - /rancher/v1.2/zh/cattle/rancher-compose/build/
 ---
 
 ## Building with AWS S3

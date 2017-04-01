@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/kubernetes/ingress/
-  - /rancher/latest/en/kubernetes/ingress/
+  - /rancher/v1.2/zh/kubernetes/ingress/
 ---
 
 ## Ingress Support
@@ -423,6 +422,29 @@ spec:
 Let's create the ingress using `kubectl`. After you create the ingress, the ingress controller will trigger the load balancer service to be created and visible in the **kubernetes-ingress-lbs** stack within the **Kubernetes** -> **System** tab. By default, the load balancer service will only have 1 instance of the load balancer deployed.
 
 From `kubectl`, you can see the ingress created, but the UI will only show the load balancer. The ingress controller has already done all the translations of the requests in the ingress to a Rancher load balancer.
+
+##### Blocking HTTP
+
+By default, port `80` is accessible even if a TLS is being used. In order to block port `80`, you can add in additional annotation `allow.http: "false"` as part of the ingress template.
+
+Example `tls-ingress.yml` and blocking port `80`
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: tlslb
+  annotations:
+    https.port: "444"
+    # Added to block HTTP
+    allow.http: "false"
+spec:
+  tls:
+   - secretName: foo
+  backend:
+    serviceName: nginx-service
+    servicePort: 90
+```
 
 #### Example customization
 

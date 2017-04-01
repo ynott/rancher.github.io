@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/rancher-ui/infrastructure/certificates/
-  - /rancher/latest/en/environments/certificates/
+  - /rancher/v1.2/zh/environments/certificates/
 ---
 
 ## Certificates

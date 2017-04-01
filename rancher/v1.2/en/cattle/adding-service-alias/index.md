@@ -5,13 +5,15 @@ version: v1.2
 lang: en
 redirect_from:
   - /rancher/rancher-ui/applications/stacks/adding-service-alias/
-  - /rancher/latest/en/cattle/adding-service-alias/
+  - /rancher/v1.2/en/rancher-ui/applications/stacks/adding-service-alias/
+  - /rancher/v1.2/zh/rancher-ui/applications/stacks/adding-service-alias/
+  - /rancher/v1.2/zh/cattle/adding-service-alias/
 ---
 
 ## Service Alias
 ---
 
-By adding a service alias, it provides the ability to point to service aliases instead of directly at services. O
+By adding a service alias, it provides the ability to point to service aliases instead of directly at services.
 
 ### Adding Service Aliases in the UI
 

@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/rancher-compose/environment-interpolation/
-  - /rancher/latest/en/cattle/rancher-compose/environment-interpolation/
+  - /rancher/v1.2/zh/cattle/rancher-compose/environment-interpolation/
 ---
 
 ## Environment Interpolation

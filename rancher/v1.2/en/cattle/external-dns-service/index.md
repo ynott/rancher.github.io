@@ -4,14 +4,13 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/rancher-services/dns-service/
-  - /rancher/latest/en/cattle/external-dns-service/
+  - /rancher/v1.2/zh/cattle/external-dns-service/
 ---
 
 ## External DNS Service
 ---
 
-As part of the [Rancher catalog]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/catalog/), Rancher provides a multiple DNS services that listen to rancher-metadata events, and generate DNS records based on the metadata changes. The examples will use Route53 as an example for how the external DNS service works, but Rancher also has community contributed services with other DNS providers.
+As part of the [Rancher catalog]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/catalog/), Rancher provides multiple DNS services that listen to rancher-metadata events, and generate DNS records based on the metadata changes. The examples will use Route53 as an example for how the external DNS service works, but Rancher also has community contributed services with other DNS providers.
 
 ### Best Practices
 

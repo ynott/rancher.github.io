@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/rancher-services/internal-dns-service/
-  - /rancher/latest/en/cattle/internal-dns-service/
+  - /rancher/v1.2/zh/cattle/internal-dns-service/
 ---
 
 ## Internal DNS Service in Cattle Environments

@@ -4,10 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /
-  - rancher/
-  - rancher/latest/
-  - rancher/latest/en/
+  - /rancher/v1.2/zh/
 ---
 
 ## Overview of Rancher

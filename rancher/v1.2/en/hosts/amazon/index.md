@@ -4,9 +4,9 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/rancher-ui/infrastructure/hosts/amazon/
   - /rancher/v1.2/en/rancher-ui/infrastructure/hosts/amazon/
-  - /rancher/latest/en/hosts/amazon/
+  - /rancher/v1.2/zh/rancher-ui/infrastructure/hosts/amazon/
+  - /rancher/v1.2/zh/hosts/amazon/
 ---
 
 ## Adding Amazon EC2 Hosts
@@ -33,7 +33,8 @@ In the **Custom** option, you can choose an existing security group, but you wil
 ### Required Ports for Rancher to work:
 
  * From the rancher server to TCP port `22` (SSH to install and configure Docker)
- * From and To all other hosts on UDP ports `500` and `4500` (for IPsec networking)
+ * If you are using the IPsec [networking driver]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/rancher-services/networking/), from and to all other hosts on UDP ports `500` and `4500`
+ * If you are using the VXLAN [networking driver]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/rancher-services/networking/), from and to all other hosts on UDP ports `4789`
 
 > **Note:** If you re-use the `rancher-machine` security group, any missing ports in the security group will not be re-opened. You will need to check the security group in AWS if the host does not launch correctly.
 

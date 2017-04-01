@@ -4,6 +4,8 @@ layout: rancher-api-v2-beta-default-v1.2
 version: v1.2
 lang: en
 apiVersion: v2-beta
+redirect_from:
+  - /rancher/v1.2/zh/api/v2-beta/api-resources/backup/
 ---
 
 ## backup
@@ -31,7 +33,7 @@ id | int  | The unique identifier for the backup
 kind | string  | 
 removed | date  | The date of when the backup was removed
 snapshotId | [snapshot]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/snapshot/)  | 
-state | enum  | The current state of the backup. The options are created, creating, removed, removing, requested.
+state | enum  | The current state of the backup. The options are `created`, `creating`, `removed`, `removing`, `requested`.
 transitioning | enum  | Whether or not the backup is in a transitioning state
 transitioningMessage | string  | The message to show while in a transitioning state
 transitioningProgress | int  | The percentage remaining in the transitioning process of the backup

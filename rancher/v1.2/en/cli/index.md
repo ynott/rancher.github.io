@@ -4,7 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - rancher/cli/
+  - /rancher/v1.2/zh/cli/
 ---
 
 ## Rancher Command Line Interface
@@ -18,13 +18,13 @@ The binary can be downloaded directly from the UI. The link can be found in the 
 
 ### Configuring the Rancher Command Line Interface
 
-There are several methods you can configure the settings that the Rancher CLI uses when interacting with Rancher, i.e. Rancher URL and [account API keys]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/api-keys/#account-api-keys). Account API keys can be created in **API** -> **Advanced Options**.
+There are several methods you can configure the settings that the Rancher CLI uses when interacting with Rancher, i.e. Rancher URL and [account API keys]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/api-keys/#account-api-keys). Account API keys can be created in **API**.
 
 There is a specific load order for what will be used.
 
 1. During `rancher config`, you'll set the Rancher URL and API keys. If there are multiple environments, then you will select a specific environment.
 2. You can set environment variables for the same values, which would override the values set in `rancher config`.
-3. If you decide to pass in values directly into the Rancher command, those values would be used for the Rancher command over any over values.
+3. If you decide to pass in values directly into the Rancher command, those values would be used for the Rancher command over any other values.
 
 #### Using Rancher Config
 

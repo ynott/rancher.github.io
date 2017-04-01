@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/rancher-services/health-checks/  
-  - /rancher/latest/en/cattle/health-checks/
+  - /rancher/v1.2/zh/cattle/health-checks/
 ---
 
 ## Health Checks

@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/rancher-compose/commands/
-  - /rancher/latest/en/cattle/rancher-compose/commands/
+  - /rancher/v1.2/zh/cattle/rancher-compose/commands/
 ---
 
 ## Command and Options

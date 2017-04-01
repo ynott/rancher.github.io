@@ -4,6 +4,8 @@ layout: rancher-api-v2-beta-default-v1.2
 version: v1.2
 lang: en
 apiVersion: v2-beta
+redirect_from:
+  - /rancher/v1.2/zh/api/v2-beta/api-resources/credential/
 ---
 
 ## credential
@@ -31,7 +33,7 @@ kind | string  |
 publicValue | string  | The public value of the credential
 removed | date  | The date of when the credential was removed
 secretValue | [password]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/password/)  | The secret value of the credential
-state | enum  | The current state of the credential. The options are activating, active, deactivating, inactive, purged, purging, registering, removed, removing, requested, updating-active, updating-inactive.
+state | enum  | The current state of the credential. The options are `activating`, `active`, `deactivating`, `inactive`, `purged`, `purging`, `registering`, `removed`, `removing`, `requested`, `updating-active`, `updating-inactive`.
 transitioning | enum  | Whether or not the credential is in a transitioning state
 transitioningMessage | string  | The message to show while in a transitioning state
 transitioningProgress | int  | The percentage remaining in the transitioning process of the credential

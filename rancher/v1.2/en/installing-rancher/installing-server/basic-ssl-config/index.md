@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/installing-rancher/installing-server/basic-ssl-config/
-  - /rancher/latest/en/installing-rancher/installing-server/basic-ssl-config/
+  - /rancher/v1.2/zh/installing-rancher/installing-server/basic-ssl-config/
 ---
 
 ## Installing Rancher Server With SSL
@@ -22,9 +21,12 @@ Besides the typical Rancher server [requirements]({{site.baseurl}}/rancher/{{pag
 
 ### Rancher Server Tags
 
-The `rancher/server:latest` tag will be our stable release builds, which Rancher recommends for deployment in production. For each minor release tag, we will provide documentation for the specific version.
+Rancher server has 2 different tags. For each major release tag, we will provide documentation for the specific version.
 
-If you are interested in trying one of our latest development builds which will have been validated through our CI automation framework, please check our [releases page](https://github.com/rancher/rancher/releases) to find the latest development release tag. These releases are not meant for deployment in production. All development builds will be appended with a `*-pre{n}` suffix to denote that it's a development release. Please do not use any release with a `rc{n}` suffix. These `rc` builds are meant for the Rancher team to test out the development builds.
+* `rancher/server:latest` tag will be our latest development builds. These builds will have been validated through our CI automation framework. These releases are not meant for deployment in production.
+* `rancher/server:stable` tag will be our latest stable release builds. This tag is the version that we recommend for production.  
+
+Please do not use any release with a `rc{n}` suffix. These `rc` builds are meant for the Rancher team to test out builds.
 
 ### Launching Rancher Server
 
@@ -47,7 +49,7 @@ If you are converting an existing Rancher instance, the upgrade to the new Ranch
 
 ### Example Nginx Configuration
 
-Here is the minimum NGINX configuration that will need to be configured. You should customize your configuration to meet your needs.
+Here is the minimum NGINX configuration that will need to be configured. You should customize your configuration to meet your needs. Ensure that you use nginx version >= 1.9.5.
 
 #### Notes on the Settings
 
@@ -61,7 +63,7 @@ upstream rancher {
 }
 
 server {
-    listen 443 ssl;
+    listen 443 ssl spdy;
     server_name <server>;
     ssl_certificate <cert_file>;
     ssl_certificate_key <key_file>;
@@ -145,7 +147,7 @@ global
   ssl-server-verify none
 
 defaults
-  mode tcp
+  mode http
   balance roundrobin
   option redispatch
   option forwardfor
@@ -156,7 +158,7 @@ defaults
   timeout server 36000s
 
 frontend http-in
-  mode tcp
+  mode http
   bind *:443 ssl crt /etc/haproxy/certificate.pem
   default_backend rancher_servers
 
@@ -165,9 +167,9 @@ frontend http-in
   use_backend rancher_servers if is_websocket
 
 backend rancher_servers
-  server websrv1 <rancher_server_1_IP>:443 weight 1 maxconn 1024 ssl
-  server websrv2 <rancher_server_2_IP>:443 weight 1 maxconn 1024 ssl
-  server websrv3 <rancher_server_3_IP>:443 weight 1 maxconn 1024 ssl
+  server websrv1 <rancher_server_1_IP>:8080 weight 1 maxconn 1024
+  server websrv2 <rancher_server_2_IP>:8080 weight 1 maxconn 1024
+  server websrv3 <rancher_server_3_IP>:8080 weight 1 maxconn 1024
 ```
 
 ### Updating Host Registration
@@ -176,63 +178,40 @@ After Rancher is launched with these settings, the UI will be up and running at 
 
 Before [adding hosts]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/hosts/), you'll need to properly configure [Host Registration]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/configuration/settings/#host-registration) for SSL.
 
+<a id="elb"></a>
 
-### Running Rancher Server Behind an ELB in AWS with SSL
+### Running Rancher Server Behind an Elastic Load Balancer (ELB) in AWS with SSL
 
-By default, ELB is enabled in HTTP/HTTPS mode, which does not support websockets. Since Rancher uses websockets, ELB must be configured specifically in order for Rancher's websockets to work.
+We recommend using an ELB in AWS in front of your rancher servers. In order for ELB to work correctly with Rancher's websockets, you will need to enable proxy protocol mode and ensure HTTP support is disabled. By default, ELB is enabled in HTTP/HTTPS mode, which does not support websockets. Special attention must be paid to listener configuration.
 
-#### Configuration Requirements for ELB to enable Rancher
+#### Listener Configuration - SSL
 
- * Enabling [proxy protocol](http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/enable-proxy-protocol.html) mode
+For SSL termination at the ELB, the listener configuration should look like this:
 
-```bash
-$ aws elb create-load-balancer-policy --load-balancer-name my-elb --policy-name myorg-ProxyProtocol-policy --policy-type-name ProxyProtocolPolicyType --policy-attributes AttributeName=ProxyProtocol,AttributeValue=true
-$ aws elb set-load-balancer-policies-for-backend-server --load-balancer-name my-elb --instance-port 81 --policy-names my-ProxyProtocol-policy
-$ aws elb set-load-balancer-policies-for-backend-server --load-balancer-name my-elb --instance-port 444 --policy-names my-ProxyProtocol-policy
+| Configuration Type | Load Balancer Protocol | Load Balancer Port | Instance Protocol | Instance Port |
+|---|---|---|---|---|
+| SSL-Terminated | SSL (Secure TCP) | 443 | TCP | 8080 (or the port used with `--advertise-http-port` when launching Rancher server) |
+
+* Add the appropriate security group and the SSL certificate
+
+#### Enabling Proxy Protocol
+
+In order for websockets to function properly, the ELB proxy protocol policy must be applied.
+
+* Enable [proxy protocol](http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/enable-proxy-protocol.html) mode
+
+```
+$ aws elb create-load-balancer-policy --load-balancer-name <LB_NAME> --policy-name <POLICY_NAME> --policy-type-name ProxyProtocolPolicyType --policy-attributes AttributeName=ProxyProtocol,AttributeValue=true
+$ aws elb set-load-balancer-policies-for-backend-server --load-balancer-name <LB_NAME> --instance-port 443 --policy-names <POLICY_NAME>
+$ aws elb set-load-balancer-policies-for-backend-server --load-balancer-name <LB_NAME> --instance-port 8080 --policy-names <POLICY_NAME>
 ```
 
- * For SSL terminated at the Rancher servers: Configure ELB listener for TLS/SSL:443 for the frontend and TCP:444 for the backend instance protocol:port.
- * For SSL terminated at the ELB: Configure ELB listener for TCP:80 for the frontend and TCP:81 for the backend instance protocol:port.
- * Health check can be configured to use HTTP:80 or HTTPS:443 using `/ping` as your path.
+* Health check can be configured to use HTTP:8080 using `/ping` as your path.
 
-### Using Self Signed Certs (Beta)
+<a id="alb"></a>
 
-#### Disclaimers
+### Running Rancher Server Behind an Application Load Balancer (ALB) in AWS with SSL
 
-This configuration will work for the 'core' services in Rancher running in a standalone mode (Non-HA setup). Currently, none of the certified Rancher templates from the [Rancher catalog](https://github.com/rancher/rancher-catalog) are supported.
+We no longer recommend Application Load Balancer (ALB) in AWS over using the Elastic/Classic Load Balancer (ELB). If you still choose to use an ALB, you will need to direct the traffic to the HTTP port on the nodes, which is `8080` by default.
 
-Rancher Compose CLI will require the CA certificate as part of the default store for the operating system. See [Golang root_*](https://golang.org/src/crypto/x509/).
-
-#### Server Pre-Requisites
-
-* CA certificate file in PEM format
-* Certificate signed by the CA for the Rancher Server
-* An instance of NGINX or Apache configured to terminate SSL and reverse proxy Rancher server
-
-#### Rancher Server
-
-1. Launch the Rancher server container with the modified Docker command. The certificate **must** be called `ca.crt` inside the container.
-
-
-   ```bash
-   $ sudo docker run -d --restart=unless-stopped -p 8080:8080 -v /some/dir/cert.crt:/ca.crt rancher/server
-   ```
-    <br>
-
-    > **Note:** If you are running NGINX or Apache in a container, you can directly link the instance and not publish the Rancher UI 8080 port.
-
-    The command will configure the server's ca-certificate bundle so that the Rancher services for machine provisioning, catalog and compose executor can communicate with the Rancher server.
-
-2. If you are using a container with NGINX or Apache to terminate SSL, launch the container and include the `--link=<rancher_server_container_name> in the command.
-
-3. Access Rancher over the `https` address, i.e. `https://rancher.server.domain`.
-
-4. Update the [Host Registration]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/configuration/settings/#host-registration) for SSL.
-
-> **Note:** Unless the machine running your web browser trusts the CA certificate used to sign the Rancher server certificate, the browser will give an untrusted site warning whenever you visit the web page.
-
-#### Adding Hosts
-
-1. On the host that you want to add into Rancher, save the CA certificate, which must be in pem format, into the directory `/var/lib/rancher/etc/ssl` with the file name `ca.crt`.
-
-2. Add the [custom host]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/hosts/custom/), which is just copying and pasting the command from the UI. The command will already include  `-v /var/lib/rancher:/var/lib/rancher`, so the file will automatically be copied onto your host.
+> **Note:** If you use an ALB with Kuberenetes, `kubectl exec` will not work and for that functionality, you will need to use an ELB.

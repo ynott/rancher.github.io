@@ -4,6 +4,8 @@ layout: rancher-api-v2-beta-default-v1.2
 version: v1.2
 lang: en
 apiVersion: v2-beta
+redirect_from:
+  - /rancher/v1.2/zh/api/v2-beta/api-resources/pullTask/
 ---
 
 ## PullTask
@@ -19,7 +21,7 @@ Field | Type | Create | Update | Default | Notes
 description | string | Optional | Yes | - | 
 image | string | Yes | - | - | 
 labels | map[string] | Optional | - | - | A map of key value pairs to be used as labels for the pullTask
-mode | enum | Yes | - | all | The options are all, cached.
+mode | enum | Yes | - | all | The options are `all`, `cached`.
 name | string | Optional | Yes | - | 
 
 
@@ -38,7 +40,7 @@ Please read more about the [common resource fields]({{site.baseurl}}/rancher/{{p
 ### Operations
 {::options parse_block_html="true" /}
 <a id="create"></a>
-<div class="action"><span class="header">Create<span class="headerright">POST:  <code>/v2-beta/pullTasks</code></span></span>
+<div class="action"><span class="header">Create<span class="headerright">POST:  <code>/v2-beta/projects/${PROJECT_ID}/pullTasks</code></span></span>
 <div class="action-contents"> {% highlight json %}
 curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 -X POST \
@@ -51,7 +53,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 	},
 	"mode": "all",
 	"name": "string"
-}' 'http://${RANCHER_URL}:8080/v2-beta/pullTasks'
+}' 'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/pullTasks'
 {% endhighlight %}
 </div></div>
 

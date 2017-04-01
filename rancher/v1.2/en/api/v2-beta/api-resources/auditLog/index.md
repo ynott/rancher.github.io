@@ -4,6 +4,8 @@ layout: rancher-api-v2-beta-default-v1.2
 version: v1.2
 lang: en
 apiVersion: v2-beta
+redirect_from:
+  - /rancher/v1.2/zh/api/v2-beta/api-resources/auditLog/
 ---
 
 ## AuditLog
@@ -17,7 +19,7 @@ The audit log provides a list of API requests. It logs the environment as well a
 
 Field | Type   | Notes
 ---|---|---
-authType | enum  | The options are AdminAuth, BasicAuth, RegistrationToken, TokenAccount, TokenAuth.
+authType | enum  | The options are `AdminAuth`, `BasicAuth`, `RegistrationToken`, `TokenAccount`, `TokenAuth`.
 authenticatedAsAccountId | [account]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/account/)  | 
 authenticatedAsIdentityId | [identity]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/identity/)  | 
 clientIp | string  | 

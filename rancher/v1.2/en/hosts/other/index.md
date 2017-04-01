@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/rancher-ui/infrastructure/hosts/other/
-  - /rancher/latest/en/hosts/other/
+  - /rancher/v1.2/zh/hosts/other/
 ---
 
 ## Adding Hosts from Other Cloud Providers

@@ -4,6 +4,8 @@ layout: rancher-api-v2-beta-default-v1.2
 version: v1.2
 lang: en
 apiVersion: v2-beta
+redirect_from:
+  - /rancher/v1.2/zh/api/v2-beta/api-resources/serviceEvent/
 ---
 
 ## serviceEvent
@@ -34,7 +36,7 @@ instanceId | [instance]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/
 kind | string  | 
 removed | date  | The date of when the serviceEvent was removed
 reportedHealth | string  | 
-state | enum  | The current state of the serviceEvent. The options are created, creating, removed, removing, requested.
+state | enum  | The current state of the serviceEvent. The options are `created`, `creating`, `removed`, `removing`, `requested`.
 transitioning | enum  | Whether or not the serviceEvent is in a transitioning state
 transitioningMessage | string  | The message to show while in a transitioning state
 transitioningProgress | int  | The percentage remaining in the transitioning process of the serviceEvent

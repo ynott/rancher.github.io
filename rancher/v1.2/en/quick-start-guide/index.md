@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/quick-start-guide/
-  - /rancher/latest/en/quick-start-guide/
+  - /rancher/v1.2/zh/quick-start-guide/
 ---
 
 ## Quick Start Guide
@@ -21,11 +20,14 @@ To install Docker on the server, follow the instructions from [Docker](https://d
 
 > **Note:** Currently, Docker for Windows and Docker for Mac are not supported.
 
-### Rancher Server Tags
+#### Rancher Server Tags
 
-The `rancher/server:latest` tag is Rancher's stable release builds, which Rancher recommends for deployment in production. For each minor release tag, we will provide documentation for the specific version.
+Rancher server has 2 different tags. For each major release tag, we will provide documentation for the specific version.
 
-If you are interested in trying one of our latest development builds which has only been validated through our CI automation framework, please check our [releases page](https://github.com/rancher/rancher/releases) to find the latest development release tag. These releases are not meant for deployment in production. All development builds will be appended with a `*-pre{n}` suffix to denote that it's a development release. Please do not use any release with a `rc{n}` suffix. These `rc` builds are meant for the Rancher team to test out the development builds.
+* `rancher/server:latest` tag will be our latest development builds. These builds will have been validated through our CI automation framework. These releases are not meant for deployment in production.
+* `rancher/server:stable` tag will be our latest stable release builds. This tag is the version that we recommend for production.  
+
+Please do not use any release with a `rc{n}` suffix. These `rc` builds are meant for the Rancher team to test out builds.
 
 ### Start Rancher Server
 
@@ -179,24 +181,28 @@ services:
   database:
     scale: 1
 ```
+
 <br>
 Download the Rancher CLI binary from the Rancher UI by clicking on **Download CLI**, which is located on the right side of the footer. We provide the ability to download binaries for Windows, Mac, and Linux.
 
-In order for services to be launched in Rancher using Rancher CLI, you will need to set some environment variables. You will need to create an [account API Key]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/api-keys/) in the Rancher UI. Click on **API** and click on **Add Account API Key**. Save the username (access key) and password (secret key). Set up the environment variables needed for Rancher CLI: `RANCHER_URL`, `RANCHER_ACCESS_KEY`, and `RANCHER_SECRET_KEY`.
+In order for services to be launched in Rancher using Rancher CLI, you will need to set some environment variables. You will need to create an [account API Key]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/api-keys/) in the Rancher UI. Click on **API** -> **Keys**. Click on **Add Account API Key**. Provide a name and click **Create**. Save the **Access Key** and **Secret Key**. Using the Rancher URL, Access Key and Secret Key, configure the Rancher CLI by running `rancher config`.
 
 ```bash
-# Set the url that Rancher is on
-$ export RANCHER_URL=http://server_ip:8080/
+# Configure Rancher CLI
+$ rancher config
+# Set the Rancher URL
+URL []: http://<SERVER_IP>:8080/
 # Set the access key, i.e. username
-$ export RANCHER_ACCESS_KEY=<username_of_key>
+Access Key []: <accessKey_of_account_api_key>
 # Set the secret key, i.e. password
-$ export RANCHER_SECRET_KEY=<password_of_key>
+Secret Key []:  <secretKey_of_account_api_key>
 ```
+
 <br>
 Now, navigate to the directory where you saved `docker-compose.yml` and `rancher-compose.yml` and run the command.
 
 ```bash
-$ rancher -p NewLetsChatApp up -d
+$ rancher up -d -s NewLetsChatApp
 ```
 <br>
 In Rancher, a new stack will be created called **NewLetsChatApp** with all of the services launched in Rancher.

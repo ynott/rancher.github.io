@@ -1,23 +1,25 @@
 ---
-title: Installing Rancher Server 
+title: Installing Rancher Server
 layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/installing-rancher/installing-server/
-  - /rancher/latest/en/installing-rancher/installing-server/
-  - /rancher/installing-rancher/installing-server/multi-nodes/
-  - /rancher/latest/en/installing-rancher/installing-server/multi-nodes/
+  - /rancher/v1.2/zh/installing-rancher/installing-server/
 ---
 
 ## Installing Rancher Server
 ---
-Rancher is deployed as a set of Docker containers. Running Rancher is a simple as launching two containers. One container as the management server and another container on a node as an agent.
+Rancher is deployed as a set of Docker containers. Running Rancher is as simple as launching two containers. One container as the management server and another container on a node as an agent.
 
 * [Rancher Server - Single Container (non-HA)](#single-container)
 * [Rancher Server - Single Container (non-HA) - External database](#single-container-external-database)
 * [Rancher Server - Single Container (non-HA)- Bind mounted MySQL volume](#single-container-bind-mount)
 * [Rancher Server - Full Active/Active HA](#multi-nodes)
+* [Rancher Server - Using ELB in AWS](#elb)
+* [Rancher Server - AD/OpenLDAP using TLS](#ldap)
+* [Rancher Server - HTTP Proxy](#http-proxy)
+
+> **Note:** You can get all help options for the Rancher server container by running `docker run rancher/server --help`.
 
 ### Requirements
 
@@ -33,9 +35,12 @@ Rancher is deployed as a set of Docker containers. Running Rancher is a simple a
 
 ### Rancher Server Tags
 
-The `rancher/server:latest` tag will be our stable release builds, which Rancher recommends for deployment in production. For each major release tag, we will provide documentation for the specific version.
+Rancher server has 2 different tags. For each major release tag, we will provide documentation for the specific version.
 
-If you are interested in trying one of our latest development builds which will have been validated through our CI automation framework, please check our [releases page](https://github.com/rancher/rancher/releases) to find the latest development release tag. These releases are not meant for deployment in production. All development builds will be appended with a `*-pre{n}` suffix to denote that it's a development release. Please do not use any release with a `rc{n}` suffix. These `rc` builds are meant for the Rancher team to test out the development builds.
+* `rancher/server:latest` tag will be our latest development builds. These builds will have been validated through our CI automation framework. These releases are not meant for deployment in production.
+* `rancher/server:stable` tag will be our latest stable release builds. This tag is the version that we recommend for production.  
+
+Please do not use any release with a `rc{n}` suffix. These `rc` builds are meant for the Rancher team to test out builds.
 
 <a id="single-container"></a>
 
@@ -138,11 +143,79 @@ Running Rancher server in High Availability (HA) is as easy as running [Rancher 
 
    For each node, the `<IP_of_the_Node>` will be unique to each node, as it will be the IP of each specific node that is being added into the HA setup.
 
+   If you change `-p 8080:8080` to expose a different port, then you would also add `--advertise-http-port` to match the same port as part of the command.
+
+   > **Note:** You can get the help for the commands by running `docker run rancher/server --help`
+
 2. Configure an external load balancer that will balance traffic on ports `80` and `443` across a pool of nodes that will be running Rancher server and target the nodes on port `8080`. Your load balancer must support websockets and forwarded-for headers, in order for Rancher to function properly. See [SSL settings page]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}//installing-rancher/installing-server/basic-ssl-config/) for example configuration settings.
 
 #### Notes on the Rancher Server Nodes in HA
 
 If the IP of your Rancher server node changes, your node will no longer be part of the Rancher HA cluster. You must stop the old Rancher server container using the incorrect IP for `--advertise-address` and start a new Rancher server with the correct IP for `--advertise-address`.
+
+<a id="elb"></a>
+
+### Running Rancher Server Behind an Elastic/Classic Load Balancer (ELB) in AWS
+
+We recommend using an ELB in AWS in front of your Rancher servers. In order for ELB to work correctly with Rancher's websockets, you will need to enable proxy protocol mode and ensure HTTP support is disabled. By default, ELB is enabled in HTTP/HTTPS mode, which does not support websockets. Special attention must be paid to listener configuration.
+
+If you have issues with ELB setup, we recommend trying the [terraform version](#configuring-using-terraform) as this reduces the opportunity to miss a setting.
+
+> **Note:** If you are using a self signed certificate, please read more about how to [configure your ELB in AWS under our SSL section]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/installing-rancher/installing-server/basic-ssl-config/#elb).
+
+#### Listener Configuration - Plaintext
+
+For simple, unencrypted load balancing purposes, the following listener configuration is required:
+
+| Configuration Type | Load Balancer Protocol | Load Balancer Port | Instance Protocol | Instance Port |
+|---|---|---|---|---|
+| Plaintext | TCP | 80 | TCP | 8080  (or the port used with `--advertise-http-port` when launching Rancher server) |
+
+#### Enabling Proxy Protocol
+
+In order for websockets to function properly, the ELB proxy protocol policy must be applied.
+
+* Enable [proxy protocol](http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/enable-proxy-protocol.html) mode
+
+```
+$ aws elb create-load-balancer-policy --load-balancer-name <LB_NAME> --policy-name <POLICY_NAME> --policy-type-name ProxyProtocolPolicyType --policy-attributes AttributeName=ProxyProtocol,AttributeValue=true
+$ aws elb set-load-balancer-policies-for-backend-server --load-balancer-name <LB_NAME> --instance-port 443 --policy-names <POLICY_NAME>
+$ aws elb set-load-balancer-policies-for-backend-server --load-balancer-name <LB_NAME> --instance-port 8080 --policy-names <POLICY_NAME>
+```
+
+* Health check can be configured to use HTTP:8080 using `/ping` as your path.
+
+#### Configuring using Terraform
+
+The following can be used as an example for configuring with Terraform:
+
+```
+resource "aws_elb" "lb" {
+  name               = "<LB_NAME>"
+  availability_zones = ["us-west-2a","us-west-2b","us-west-2c"]
+  security_groups = ["<SG_ID>"]
+
+  listener {
+    instance_port     = 8080
+    instance_protocol = "tcp"
+    lb_port           = 443
+    lb_protocol       = "ssl"
+    ssl_certificate_id = "<IAM_PATH_TO_CERT>"
+  }
+
+}
+
+resource "aws_proxy_protocol_policy" "websockets" {
+  load_balancer  = "${aws_elb.lb.name}"
+  instance_ports = ["8080"]
+}
+```
+
+<a id="alb"></a>
+
+### Running Rancher Server Behind an Application Load Balancer (ALB) in AWS
+
+We no longer recommend Application Load Balancer (ALB) in AWS over using the Elastic/Classic Load Balancer (ELB). If you still choose to use an ALB, you will need to direct the traffic to the HTTP port on the nodes, which is `8080` by default.
 
 <a id="ldap"></a>
 
@@ -154,25 +227,42 @@ Start Rancher by bind mounting the volume that has the certificate. The certific
 
 ```bash
 $ sudo docker run -d --restart=unless-stopped -p 8080:8080 \
-  -v /dir_that_contains_the_cert/cert.crt:/ca.crt rancher/server
+  -v /some/dir/cert.crt:/var/lib/rancher/etc/ssl/ca.crt rancher/server
 ```
 
 You can check that the `ca.crt` was passed to Rancher server container successfully by checking the logs of the rancher server container.
 
 ```bash
-$ docker logs <server_container_id>
+$ docker logs <SERVER_CONTAINER_ID>
 ```
 
-In the beginning of the logs, there will be confirmation that the `ldap.crt` was added correctly.
+In the beginning of the logs, there will be confirmation that the certificate was added correctly. These logs may not be sequential.
 
 ```bash
-DEFAULT_CATTLE_RANCHER_COMPOSE_WINDOWS_URL=https://releases.rancher.com/compose/beta/latest/rancher-compose-windows-386.zip
+# Logs may not be sequential, but will be in the logs.
 Adding ca.crt to Certs.
 Updating certificates in /etc/ssl/certs... 1 added, 0 removed; done.
-Running hooks in /etc/ca-certificates/update.d....
-done.
-done.
-[BOOTSTRAP] Starting Cattle
+Running hooks in /etc/ca-certificates/update.d....done.
+Certificate was added to keystore
+```
+
+After the Rancher server container is started, the certificate also needs to be added to the Java keystore in the Rancher container. This applies only to Rancher 1.2.x releases, and has been fixed so that in future releases, you do not need to do these additional steps.
+
+```bash
+# Exec into the container
+$ docker exec -it <SERVER_CONTAINER_ID> bash
+# Navigate to the correct directory
+$ cd /usr/lib/jvm/zulu-8-amd64/jre/lib/security
+# Add the file to the keystore
+$ keytool -import -trustcacerts -file /var/lib/rancher/etc/ssl/ca.crt -alias myca -keystore ./cacerts
+# It will prompt for a password, which is "changeit"
+```
+
+After the file is copied, the container will need to be restarted.
+
+```bash
+# Restart the container
+$ docker restart <SERVER_CONTAINER_ID>
 ```
 
 <a id="http-proxy"></a>

@@ -3,6 +3,8 @@ title: Installing Rancher Server with No Internet Access
 layout: rancher-default-v1.1
 version: v1.1
 lang: en
+redirect_from:
+  - /rancher/v1.1/zh/installing-rancher/installing-server/no-internet-access/
 ---
 
 ## Launching Rancher Server with No Internet Access
@@ -14,7 +16,7 @@ When launching Rancher server with no internet access, there will be a couple of
 
 * Launching Hosts using the UI for Cloud Providers - Since Rancher is calling `docker-machine` to create hosts in the cloud providers, this functionality will not work. You will add [custom hosts]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/hosts/custom/) to your Rancher setup.
 * GitHub Authentication
-* Templates from the [Rancher Catalog](https://github.com/rancher/rancher-catalog) and [Community Catalog](https://github.com/rancher/community-catalog) - These catalogs rely on being cloned from Github, but you will be able to [add internal private catalogs]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/catalog/private-catalogs) into Rancher.
+* Templates from the [Rancher Catalog](https://github.com/rancher/rancher-catalog) and [Community Catalog](https://github.com/rancher/community-catalog) - These catalogs rely on being cloned from Github, but you will be able to [add internal private catalogs]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/catalog/private-catalog) into Rancher.
 
 ### Using Private Registry
 
@@ -51,7 +53,7 @@ $ docker push localhost:5000/<NAME_OF_LOCAL_RANCHER_AGENT_INSTANCE_IMAGE>:v0.8.1
 
 On your machine, start Rancher server to use the specific Rancher images. We recommend using specific version tags instead of the `latest` tag to ensure you are working with the correct versions.
 
-Using the v1.0.1 example:
+Example:
 
 ```bash
 $ sudo docker run -d --restart=unless-stopped -p 8080:8080 \

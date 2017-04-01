@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/rancher-services/storage-service/
-  - /rancher/latest/en/rancher-services/storage-service/
+  - /rancher/v1.2/zh/rancher-services/storage-service/
 ---
 
 ## Storage Service
@@ -108,7 +107,7 @@ When scaling up the `foo` service, a volume will be created for each new contain
 
 #### Environment Scoped
 
-To use volumes across stacks, you would need to use an environment scoped volume. In this case, volumes must already created in Rancher prior to starting services and stacks using the volume. To use an environment scoped volume, you'd add the `external` option to the volume.
+To use volumes across stacks, you would need to use an environment scoped volume. In this case, volumes must already be created in Rancher prior to starting services and stacks using the volume. To use an environment scoped volume, you'd add the `external` option to the volume.
 
 ```yaml
 version: '2'

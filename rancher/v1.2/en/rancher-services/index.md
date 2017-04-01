@@ -4,7 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/latest/en/rancher-services/
+  - /rancher/v1.2/zh/rancher-services/
 ---
 
 ## Infrastructure Services

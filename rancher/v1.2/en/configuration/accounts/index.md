@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/configuration/accounts/
-  - /rancher/latest/en/configuration/accounts/
+  - /rancher/v1.2/zh/configuration/accounts/
 ---
 
 ## Accounts
@@ -13,7 +12,7 @@ redirect_from:
 
 ### What are Accounts?
 
-Every user who has access to Rancher has an account in Rancher. For local authentication setups, you create accounts for users, where as for other authentication providers, an account is created for the user when they have logged into Rancher. 
+Every user who has access to Rancher has an account in Rancher. For local authentication setups, you create accounts for users, where as for other authentication providers, an account is created for the user when they have logged into Rancher.
 
 #### Active Directory/GitHub/OpenLDAP Authentication
 

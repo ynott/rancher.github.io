@@ -4,6 +4,8 @@ layout: rancher-api-v2-beta-default-v1.2
 version: v1.2
 lang: en
 apiVersion: v2-beta
+redirect_from:
+  - /rancher/v1.2/zh/api/v2-beta/api-resources/containerProxy/
 ---
 
 ## containerProxy
@@ -17,7 +19,7 @@ apiVersion: v2-beta
 Field | Type | Create | Update | Default | Notes
 ---|---|---|---|---|---
 port | int | Optional | - | 80 | 
-scheme | enum | Optional | - | http | The options are http, https.
+scheme | enum | Optional | - | http | The options are `http`, `https`.
 
 
 

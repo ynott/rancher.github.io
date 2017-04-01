@@ -4,7 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/latest/en/private-catalog/
+  - /rancher/v1.2/zh/catalog/private-catalog/
 ---
 
 ## Creating Private Catalogs
@@ -27,7 +27,7 @@ Catalog templates are displayed in Rancher based on what container orchestration
 
 The [infrastructure services]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/rancher-services/) that are available to be enabled in an [environment template]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/environments/#what-is-an-environment-template), are from the `infra-templates` folder of any catalog enabled in Rancher.
 
-These services are also available from the **Catalog** tab, and you will be able to see all the infrastructure services even though they may not work with the selected orchestration type. It's recommended to select infrastructure services during environment template creation versus launching them directly from the catalog. 
+These services are also available from the **Catalog** tab, and you will be able to see all the infrastructure services even though they may not work with the selected orchestration type. It's recommended to select infrastructure services during environment template creation versus launching them directly from the catalog.
 
 ### Directory Structure
 
@@ -80,7 +80,7 @@ The `docker-compose.yml` and `rancher-compose.yml` are the **required** files to
 
 The `docker-compose.yml` should be a file that could also be launched using `docker-compose up`. The services follow the docker-compose format.
 
-The `rancher-compose.yml` will contain additional information to help customize your catalog entries. In the `.catalog` section, there are some fields that will be required in order to have your catalog entry interpreted correctly.
+The `rancher-compose.yml` will contain additional information to help customize your catalog entries. In the `catalog` section, there are some fields that will be required in order to have your catalog entry interpreted correctly.
 
 An optional `README.md` is possible to be created, which provides a lengthy description or notes on how to use the catalog service.
 
@@ -108,13 +108,13 @@ For `upgrade_from`, there are three types of values that can be used.
 
 ### Questions in the `rancher-compose.yml`
 
-The `questions` section of `.catalog` is used to allow the user to change the configuration options of the services. The `answers` would be populated within the `docker-compose.yml` before the services are launched.
+The `questions` section of `catalog` is used to allow the user to change the configuration options of the services. The `answers` would be populated within the `docker-compose.yml` before the services are launched.
 
 Each configuration option is a list item in the `questions` section of the `rancher-compose.yml`.
 
 ```yaml
 version: '2'
-.catalog:
+catalog:
   questions:
     - variable: # A single word that is used to pair the question and answer.
       label: # The "question" to be answered.

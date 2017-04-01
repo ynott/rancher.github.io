@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/configuration/machine-drivers/
-  - /rancher/latest/en/configuration/machine-drivers/
+  - /rancher/v1.2/zh/configuration/machine-drivers/
 ---
 
 ## Machine Drivers

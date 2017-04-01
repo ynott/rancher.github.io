@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/rancher-ui/infrastructure/hosts/custom/
-  - /rancher/latest/en/hosts/custom/
+  - /rancher/v1.2/zh/hosts/custom/
 ---
 
 ## Adding Custom Hosts
@@ -47,7 +46,8 @@ http://<rancher-server-ip>:8080/v1/projects/1a5/scripts/<registrationToken>
 
 For any hosts that are added, ensure that any security groups or firewalls allow traffic. If these are not enabled, the Rancher functionality will be limited.
 
-* From and to all other hosts on UDP ports `500` and `4500` (for IPsec networking)
+* If you are using the IPsec [networking driver]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/rancher-services/networking/), from and to all other hosts on UDP ports `500` and `4500`
+* If you are using the VXLAN [networking driver]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/rancher-services/networking/), from and to all other hosts on UDP ports `4789`
 
 <a id="samehost"></a>
 

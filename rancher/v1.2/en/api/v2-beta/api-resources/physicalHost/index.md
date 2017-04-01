@@ -4,6 +4,8 @@ layout: rancher-api-v2-beta-default-v1.2
 version: v1.2
 lang: en
 apiVersion: v2-beta
+redirect_from:
+  - /rancher/v1.2/zh/api/v2-beta/api-resources/physicalHost/
 ---
 
 ## physicalHost
@@ -31,7 +33,7 @@ externalId | string  |
 id | int  | The unique identifier for the physicalHost
 kind | string  | 
 removed | date  | The date of when the physicalHost was removed
-state | enum  | The current state of the physicalHost. The options are active, bootstrapping, created, creating, error, erroring, removed, removing, requested, updating.
+state | enum  | The current state of the physicalHost. The options are `active`, `bootstrapping`, `created`, `creating`, `error`, `erroring`, `removed`, `removing`, `requested`, `updating`.
 transitioning | enum  | Whether or not the physicalHost is in a transitioning state
 transitioningMessage | string  | The message to show while in a transitioning state
 transitioningProgress | int  | The percentage remaining in the transitioning process of the physicalHost

@@ -4,6 +4,8 @@ layout: rancher-api-v2-beta-default-v1.2
 version: v1.2
 lang: en
 apiVersion: v2-beta
+redirect_from:
+  - /rancher/v1.2/zh/api/v2-beta/api-resources/register/
 ---
 
 ## register
@@ -32,7 +34,7 @@ id | int  | The unique identifier for the register
 kind | string  | 
 removed | date  | The date of when the register was removed
 secretKey | string  | 
-state | enum  | The current state of the register. The options are activating, active, deactivating, inactive, purged, purging, registering, removed, removing, requested, restoring, updating-active, updating-inactive.
+state | enum  | The current state of the register. The options are `activating`, `active`, `deactivating`, `inactive`, `purged`, `purging`, `registering`, `removed`, `removing`, `requested`, `restoring`, `updating-active`, `updating-inactive`.
 transitioning | enum  | Whether or not the register is in a transitioning state
 transitioningMessage | string  | The message to show while in a transitioning state
 transitioningProgress | int  | The percentage remaining in the transitioning process of the register

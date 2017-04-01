@@ -4,6 +4,8 @@ layout: rancher-api-v2-beta-default-v1.2
 version: v1.2
 lang: en
 apiVersion: v2-beta
+redirect_from:
+  - /rancher/v1.2/zh/api/v2-beta/api-resources/instance/
 ---
 
 ## instance
@@ -31,7 +33,7 @@ hostId | [host]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{pa
 id | int  | The unique identifier for the instance
 kind | string  | 
 removed | date  | The date of when the instance was removed
-state | enum  | The current state of the instance. The options are creating, error, erroring, migrating, purged, purging, removed, removing, requested, restarting, restoring, running, starting, stopped, stopping, updating-running, updating-stopped.
+state | enum  | The current state of the instance. The options are `creating`, `error`, `erroring`, `migrating`, `purged`, `purging`, `removed`, `removing`, `requested`, `restarting`, `restoring`, `running`, `starting`, `stopped`, `stopping`, `updating-running`, `updating-stopped`.
 transitioning | enum  | Whether or not the instance is in a transitioning state
 transitioningMessage | string  | The message to show while in a transitioning state
 transitioningProgress | int  | The percentage remaining in the transitioning process of the instance

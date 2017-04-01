@@ -4,6 +4,8 @@ layout: rancher-api-v2-beta-default-v1.2
 version: v1.2
 lang: en
 apiVersion: v2-beta
+redirect_from:
+  - /rancher/v1.2/zh/api/v2-beta/api-resources/composeService/
 ---
 
 ## composeService
@@ -44,7 +46,7 @@ kind | string  |
 linkedServices | map[[service]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/service/)]  | 
 publicEndpoints | array[[publicEndpoint]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/publicEndpoint/)]  | 
 removed | date  | The date of when the composeService was removed
-state | enum  | The current state of the composeService. The options are activating, active, canceled-upgrade, canceling-upgrade, deactivating, finishing-upgrade, inactive, registering, removed, removing, requested, restarting, rolling-back, updating-active, updating-inactive, upgraded, upgrading.
+state | enum  | The current state of the composeService. The options are `activating`, `active`, `canceled-upgrade`, `canceling-upgrade`, `deactivating`, `finishing-upgrade`, `inactive`, `registering`, `removed`, `removing`, `requested`, `restarting`, `rolling-back`, `updating-active`, `updating-inactive`, `upgraded`, `upgrading`.
 system | boolean  | 
 transitioning | enum  | Whether or not the composeService is in a transitioning state
 transitioningMessage | string  | The message to show while in a transitioning state

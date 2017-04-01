@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/faqs/server/
-  - /rancher/latest/en/faqs/server/
+  - /rancher/v1.2/zh/faqs/server/
 ---
 
 ## FAQs about Rancher Server
@@ -42,6 +41,14 @@ Here's the command to copy the Rancher server logs from the container to the hos
 
 ```bash
 $ docker cp <container_id>:/var/lib/cattle/logs /local/path
+```
+
+### How do I export the internal database in the Rancher server container?
+
+You can export the database from the Rancher server container with a simple Docker command.
+
+```
+$ docker exec <CONTAINER_ID_OF_SERVER> mysqldump cattle > dump.sql
 ```
 
 ### What happens if the IP of Rancher server has changed?

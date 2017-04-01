@@ -4,8 +4,7 @@ layout: rancher-default-v1.2
 version: v1.2
 lang: en
 redirect_from:
-  - /rancher/installing-rancher/installing-server/no-internet-access/
-  - /rancher/latest/en/installing-rancher/installing-server/no-internet-access/
+  - /rancher/v1.2/zh/installing-rancher/installing-server/no-internet-access/
 ---
 
 ## Launching Rancher Server with No Internet Access
@@ -20,9 +19,12 @@ When launching Rancher server with no internet access, there will be a couple of
 
 ### Rancher Server Tags
 
-The `rancher/server:latest` tag will be our stable release builds, which Rancher recommends for deployment in production. For each minor release tag, we will provide documentation for the specific version.
+Rancher server has 2 different tags. For each major release tag, we will provide documentation for the specific version.
 
-If you are interested in trying one of our latest development builds which will have been validated through our CI automation framework, please check our [releases page](https://github.com/rancher/rancher/releases) to find the latest development release tag. These releases are not meant for deployment in production. All development builds will be appended with a `*-pre{n}` suffix to denote that it's a development release. For any release with a `rc{n}` suffix, please do not use this tag. These `rc` builds are meant for the Rancher QA team to test out the development builds.
+* `rancher/server:latest` tag will be our latest development builds. These builds will have been validated through our CI automation framework. These releases are not meant for deployment in production.
+* `rancher/server:stable` tag will be our latest stable release builds. This tag is the version that we recommend for production.  
+
+Please do not use any release with a `rc{n}` suffix. These `rc` builds are meant for the Rancher team to test out builds.
 
 ### Using A Private Registry
 
@@ -58,7 +60,7 @@ $ docker push localhost:5000/<NAME_OF_LOCAL_RANCHER_AGENT_IMAGE>:v1.1.0
 
 On your machine, start Rancher server to use the specific Rancher Agent image. We recommend using specific version tags instead of the `latest` tag to ensure you are working with the correct versions.
 
-Using the v1.0.1 example:
+Example:
 
 ```bash
 $ sudo docker run -d --restart=unless-stopped -p 8080:8080 \
@@ -83,6 +85,18 @@ The command from the UI will be configured to use the private registry image for
 ```bash
 $ sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock <Private_Registry_Domain>:5000/<NAME_OF_LOCAL_RANCHER_AGENT_IMAGE>:v1.1.0 http://<SERVER_IP>:8080/v1/scripts/<security_credentials>
 ```
+
+#### Configuring the Default Registry for Infrastructure Stacks
+
+In Rancher, all [infrastructure services]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/rancher-services/) are defaulted to pull from DockerHub. Changing the default registry from DockerHub to a different private registry is located in the API settings.
+
+* **Add the private registry:** In **Infrastructure** -> **Registries** section, add the private registry that contain the images for the infrastructure services.
+
+* **Update the default registry:** Under **API**, click on the link for **Endpoint (v2-beta)**. Click on the link for **settings**, which will navigate to `v2-beta/settings`. Find the `registry.default` setting and click on the link under `self`. Edit the setting and add the private registry value. Once the `registry.default` setting has been updated, the infrastructure services will begin to pull from the private registry instead of DockerHub.
+
+* **Create a New Environment:** After updating the default registry, you will need to re-create your environments so that the infrastructure services will be using the updated default registry. Any existing environments prior to the change in default registry would have their infrastructure services still pointing to DockerHub.
+
+> **Note:** Any infrastructure stacks in an existing environment will still be using the original default registry (e.g. DockerHub). These stacks will need to be deleted and re-launched to start using the updated default registry. The stacks can be deployed from **Catalog** -> **Library**.
 
 ### Using HTTP Proxy
 

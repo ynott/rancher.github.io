@@ -5,8 +5,7 @@ version: v1.2
 lang: en
 apiVersion: v1
 redirect_from:
-  - /rancher/api/common/
-  - /rancher/latest/en/api/common/
+  - /rancher/v1.2/zh/api/v1/common/
 ---
 
 ## Common Resource Fields

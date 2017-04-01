@@ -4,6 +4,8 @@ layout: rancher-api-v2-beta-default-v1.2
 version: v1.2
 lang: en
 apiVersion: v2-beta
+redirect_from:
+  - /rancher/v1.2/zh/api/v2-beta/api-resources/storageDriverService/
 ---
 
 ## StorageDriverService
@@ -58,7 +60,7 @@ Please read more about the [common resource fields]({{site.baseurl}}/rancher/{{p
 ### Operations
 {::options parse_block_html="true" /}
 <a id="create"></a>
-<div class="action"><span class="header">Create<span class="headerright">POST:  <code>/v2-beta/storageDriverServices</code></span></span>
+<div class="action"><span class="header">Create<span class="headerright">POST:  <code>/v2-beta/projects/${PROJECT_ID}/storageDriverServices</code></span></span>
 <div class="action-contents"> {% highlight json %}
 curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 -X POST \
@@ -308,19 +310,19 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 		]
 	},
 	"vip": "string"
-}' 'http://${RANCHER_URL}:8080/v2-beta/storageDriverServices'
+}' 'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/storageDriverServices'
 {% endhighlight %}
 </div></div>
 <a id="delete"></a>
-<div class="action"><span class="header">Delete<span class="headerright">DELETE:  <code>/v2-beta/storageDriverServices/${ID}</code></span></span>
+<div class="action"><span class="header">Delete<span class="headerright">DELETE:  <code>/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}</code></span></span>
 <div class="action-contents"> {% highlight json %}
 curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 -X DELETE \
-'http://${RANCHER_URL}:8080/v2-beta/storageDriverServices/${ID}'
+'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}'
 {% endhighlight %}
 </div></div>
 <a id="update"></a>
-<div class="action"><span class="header">Update<span class="headerright">PUT:  <code>/v2-beta/storageDriverServices/${ID}</code></span></span>
+<div class="action"><span class="header">Update<span class="headerright">PUT:  <code>/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}</code></span></span>
 <div class="action-contents"> {% highlight json %}
 curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 -X PUT \
@@ -365,7 +367,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 			"...stringN"
 		]
 	}
-}' 'http://${RANCHER_URL}:8080/v2-beta/storageDriverServices/${ID}'
+}' 'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}'
 {% endhighlight %}
 </div></div>
 
@@ -376,7 +378,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 <div class="action" id="activate">
 <span class="header">
 activate
-<span class="headerright">POST:  <code>/v2-beta/storageDriverServices/${ID}?action=activate</code></span></span>
+<span class="headerright">POST:  <code>/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=activate</code></span></span>
 <div class="action-contents">
 
 <br>
@@ -387,7 +389,7 @@ activate
 {% highlight json %}
 curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 -X POST \
-'http://${RANCHER_URL}:8080/v2-beta/storageDriverServices/${ID}?action=activate'
+'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=activate'
 {% endhighlight %}
 <br>
 <span class="output"><strong>Output:</strong> An updated copy of the <a href="{{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/service/">service</a> resource</span>
@@ -396,7 +398,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 <div class="action" id="addservicelink">
 <span class="header">
 addservicelink
-<span class="headerright">POST:  <code>/v2-beta/storageDriverServices/${ID}?action=addservicelink</code></span></span>
+<span class="headerright">POST:  <code>/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=addservicelink</code></span></span>
 <div class="action-contents">
 
 <br>
@@ -405,7 +407,8 @@ addservicelink
 
 Field | Type | Required | Default | Notes
 ---|---|---|---|---
-serviceLink | [serviceLink]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/serviceLink/) | Yes |  | <br>
+serviceLink | [serviceLink]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/serviceLink/) | Yes |  | 
+
 
 <br>
 {% highlight json %}
@@ -418,7 +421,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 		"serviceId": "reference[service]",
 		"uuid": "string"
 	}
-}' 'http://${RANCHER_URL}:8080/v2-beta/storageDriverServices/${ID}?action=addservicelink'
+}' 'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=addservicelink'
 {% endhighlight %}
 <br>
 <span class="output"><strong>Output:</strong> An updated copy of the <a href="{{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/service/">service</a> resource</span>
@@ -427,7 +430,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 <div class="action" id="cancelupgrade">
 <span class="header">
 cancelupgrade
-<span class="headerright">POST:  <code>/v2-beta/storageDriverServices/${ID}?action=cancelupgrade</code></span></span>
+<span class="headerright">POST:  <code>/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=cancelupgrade</code></span></span>
 <div class="action-contents">
 
 <br>
@@ -438,7 +441,7 @@ cancelupgrade
 {% highlight json %}
 curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 -X POST \
-'http://${RANCHER_URL}:8080/v2-beta/storageDriverServices/${ID}?action=cancelupgrade'
+'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=cancelupgrade'
 {% endhighlight %}
 <br>
 <span class="output"><strong>Output:</strong> An updated copy of the <a href="{{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/service/">service</a> resource</span>
@@ -447,7 +450,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 <div class="action" id="continueupgrade">
 <span class="header">
 continueupgrade
-<span class="headerright">POST:  <code>/v2-beta/storageDriverServices/${ID}?action=continueupgrade</code></span></span>
+<span class="headerright">POST:  <code>/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=continueupgrade</code></span></span>
 <div class="action-contents">
 
 <br>
@@ -458,7 +461,7 @@ continueupgrade
 {% highlight json %}
 curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 -X POST \
-'http://${RANCHER_URL}:8080/v2-beta/storageDriverServices/${ID}?action=continueupgrade'
+'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=continueupgrade'
 {% endhighlight %}
 <br>
 <span class="output"><strong>Output:</strong> An updated copy of the <a href="{{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/service/">service</a> resource</span>
@@ -467,7 +470,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 <div class="action" id="deactivate">
 <span class="header">
 deactivate
-<span class="headerright">POST:  <code>/v2-beta/storageDriverServices/${ID}?action=deactivate</code></span></span>
+<span class="headerright">POST:  <code>/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=deactivate</code></span></span>
 <div class="action-contents">
 
 <br>
@@ -478,7 +481,7 @@ deactivate
 {% highlight json %}
 curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 -X POST \
-'http://${RANCHER_URL}:8080/v2-beta/storageDriverServices/${ID}?action=deactivate'
+'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=deactivate'
 {% endhighlight %}
 <br>
 <span class="output"><strong>Output:</strong> An updated copy of the <a href="{{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/service/">service</a> resource</span>
@@ -487,7 +490,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 <div class="action" id="finishupgrade">
 <span class="header">
 finishupgrade
-<span class="headerright">POST:  <code>/v2-beta/storageDriverServices/${ID}?action=finishupgrade</code></span></span>
+<span class="headerright">POST:  <code>/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=finishupgrade</code></span></span>
 <div class="action-contents">
 
 <br>
@@ -498,7 +501,7 @@ finishupgrade
 {% highlight json %}
 curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 -X POST \
-'http://${RANCHER_URL}:8080/v2-beta/storageDriverServices/${ID}?action=finishupgrade'
+'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=finishupgrade'
 {% endhighlight %}
 <br>
 <span class="output"><strong>Output:</strong> An updated copy of the <a href="{{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/service/">service</a> resource</span>
@@ -507,7 +510,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 <div class="action" id="removeservicelink">
 <span class="header">
 removeservicelink
-<span class="headerright">POST:  <code>/v2-beta/storageDriverServices/${ID}?action=removeservicelink</code></span></span>
+<span class="headerright">POST:  <code>/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=removeservicelink</code></span></span>
 <div class="action-contents">
 
 <br>
@@ -516,7 +519,8 @@ removeservicelink
 
 Field | Type | Required | Default | Notes
 ---|---|---|---|---
-serviceLink | [serviceLink]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/serviceLink/) | Yes |  | <br>
+serviceLink | [serviceLink]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/serviceLink/) | Yes |  | 
+
 
 <br>
 {% highlight json %}
@@ -529,7 +533,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 		"serviceId": "reference[service]",
 		"uuid": "string"
 	}
-}' 'http://${RANCHER_URL}:8080/v2-beta/storageDriverServices/${ID}?action=removeservicelink'
+}' 'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=removeservicelink'
 {% endhighlight %}
 <br>
 <span class="output"><strong>Output:</strong> An updated copy of the <a href="{{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/service/">service</a> resource</span>
@@ -538,7 +542,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 <div class="action" id="restart">
 <span class="header">
 restart
-<span class="headerright">POST:  <code>/v2-beta/storageDriverServices/${ID}?action=restart</code></span></span>
+<span class="headerright">POST:  <code>/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=restart</code></span></span>
 <div class="action-contents">
 
 <br>
@@ -547,7 +551,8 @@ restart
 
 Field | Type | Required | Default | Notes
 ---|---|---|---|---
-rollingRestartStrategy | [rollingRestartStrategy]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/rollingRestartStrategy/) | Yes |  | <br>
+rollingRestartStrategy | [rollingRestartStrategy]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/rollingRestartStrategy/) | Yes |  | 
+
 
 <br>
 {% highlight json %}
@@ -559,7 +564,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 		"batchSize": 1,
 		"intervalMillis": 2000
 	}
-}' 'http://${RANCHER_URL}:8080/v2-beta/storageDriverServices/${ID}?action=restart'
+}' 'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=restart'
 {% endhighlight %}
 <br>
 <span class="output"><strong>Output:</strong> An updated copy of the <a href="{{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/service/">service</a> resource</span>
@@ -568,7 +573,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 <div class="action" id="rollback">
 <span class="header">
 rollback
-<span class="headerright">POST:  <code>/v2-beta/storageDriverServices/${ID}?action=rollback</code></span></span>
+<span class="headerright">POST:  <code>/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=rollback</code></span></span>
 <div class="action-contents">
 
 <br>
@@ -579,7 +584,7 @@ rollback
 {% highlight json %}
 curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 -X POST \
-'http://${RANCHER_URL}:8080/v2-beta/storageDriverServices/${ID}?action=rollback'
+'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=rollback'
 {% endhighlight %}
 <br>
 <span class="output"><strong>Output:</strong> An updated copy of the <a href="{{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/service/">service</a> resource</span>
@@ -588,7 +593,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 <div class="action" id="setservicelinks">
 <span class="header">
 setservicelinks
-<span class="headerright">POST:  <code>/v2-beta/storageDriverServices/${ID}?action=setservicelinks</code></span></span>
+<span class="headerright">POST:  <code>/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=setservicelinks</code></span></span>
 <div class="action-contents">
 
 <br>
@@ -597,7 +602,8 @@ setservicelinks
 
 Field | Type | Required | Default | Notes
 ---|---|---|---|---
-serviceLinks | array[[serviceLink]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/serviceLink/)] | No |  | <br>
+serviceLinks | array[[serviceLink]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/serviceLink/)] | No |  | 
+
 
 <br>
 {% highlight json %}
@@ -606,7 +612,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 -H 'Content-Type: application/json' \
 -d '{
 	"serviceLinks": "array[serviceLink]"
-}' 'http://${RANCHER_URL}:8080/v2-beta/storageDriverServices/${ID}?action=setservicelinks'
+}' 'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=setservicelinks'
 {% endhighlight %}
 <br>
 <span class="output"><strong>Output:</strong> An updated copy of the <a href="{{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/service/">service</a> resource</span>
@@ -615,7 +621,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 <div class="action" id="upgrade">
 <span class="header">
 upgrade
-<span class="headerright">POST:  <code>/v2-beta/storageDriverServices/${ID}?action=upgrade</code></span></span>
+<span class="headerright">POST:  <code>/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=upgrade</code></span></span>
 <div class="action-contents">
 
 <br>
@@ -624,7 +630,9 @@ upgrade
 
 Field | Type | Required | Default | Notes
 ---|---|---|---|---
-inServiceStrategy | [inServiceUpgradeStrategy]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/inServiceUpgradeStrategy/) | No |  | toServiceStrategy | [toServiceUpgradeStrategy]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/toServiceUpgradeStrategy/) | No |  | <br>
+inServiceStrategy | [inServiceUpgradeStrategy]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/inServiceUpgradeStrategy/) | No |  | 
+toServiceStrategy | [toServiceUpgradeStrategy]({{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/toServiceUpgradeStrategy/) | No |  | 
+
 
 <br>
 {% highlight json %}
@@ -1044,7 +1052,7 @@ curl -u "${RANCHER_ACCESS_KEY}:${RANCHER_SECRET_KEY}" \
 		"toServiceId": "reference[service]",
 		"updateLinks": false
 	}
-}' 'http://${RANCHER_URL}:8080/v2-beta/storageDriverServices/${ID}?action=upgrade'
+}' 'http://${RANCHER_URL}:8080/v2-beta/projects/${PROJECT_ID}/storageDriverServices/${ID}?action=upgrade'
 {% endhighlight %}
 <br>
 <span class="output"><strong>Output:</strong> An updated copy of the <a href="{{site.baseurl}}/rancher/{{page.version}}/{{page.lang}}/api/{{page.apiVersion}}/api-resources/service/">service</a> resource</span>
