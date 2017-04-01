@@ -1,11 +1,14 @@
-* * *
+---
+title: Installing Rancher Server (Single Node)
+layout: rancher-default-v1.2
+version: v1.2 lang: en
+redirect_from:
+ - /rancher/installing-rancher/installing-server/
+ - /rancher/latest/en/installing-rancher/installing-server/
+---
 
-title: Installing Rancher Server (Single Node) layout: rancher-default-v1.2 version: v1.2 lang: en redirect_from: - /rancher/installing-rancher/installing-server/ - /rancher/latest/en/installing-rancher/installing-server/
-
-* * *
-
-## ## Installing Rancher Server (Single Node)
-
+## Installing Rancher Server (Single Node)
+---
 Rancher is deployed as a set of Docker containers. Running Rancher is a simple as launching two containers. One container as the management server and another container on a node as an agent.
 
 ### Requirements
